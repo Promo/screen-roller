@@ -9,7 +9,8 @@
 			addBind = {},
 			onMod = {},
 			mod,
-			nextIndexScreen;
+			nextIndexScreen,
+			oldValue;
 
       	var options = $.extend({
       		'baseClass': 'roller',
@@ -82,12 +83,40 @@
 	    	moveTo(nextIndexScreen)
 	    }
 
-	    var moveTo = function(indexScreen) {
-	    	console.log($self);
-	    	options.beforeMove();
-	    	$self.animate({top: indexScreen * -100 + '%'}, $self.animationSpeed, function() {
-	    		options.afterMove();
-	    	});
+	    var moveTo = function(index) {
+	    	checkSupport3d();
+
+	    	if($self.transformPrefix) {
+	    		moveTo = function(index) {
+	    			options.beforeMove(index);
+	    			$self.css('transform', 'translate3d(0, ' + index * -100 +'%, 0)');
+	    		}
+	    	} else {
+	    		moveTo = function(index) {
+	    			options.beforeMove(index);
+	    			$self.stop(true, true);
+			    	$self.animate({top: index * -100 + '%'}, $self.animationSpeed, function() {
+			    		options.afterMove(index);
+			    	});
+	    		}
+			}
+			moveTo(index);
+	    }
+
+	    var checkSupport3d = function() {
+	        $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
+	        	if($self.css(val)) {
+	        		if($self.css(val).match(/matrix3d/)) {
+	        			$self.transformPrefix = val; 
+	        			return
+	        		} else {
+	        			oldValue = $self.css(val);
+	        			$self.css(val, 'translate3d(0px, 0px, 1px)');
+		        		$self.css(val) && $self.css(val).match(/matrix3d/) ? $self.transformPrefix = val : '';
+			        	$self.css(val, oldValue);
+	        		}
+	        	}
+	        })
 	    }
 
 	    onMod[options.screenPageClass] = function() {
@@ -105,9 +134,6 @@
     		removeBinds();
     		addBind[mod]();
 	    }
-
-
-	    
 
 	    addBind[options.screenPageClass] = function() {
 	    	console.log('Добавляем бинды для ', options.screenPageClass);
