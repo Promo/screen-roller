@@ -8,8 +8,13 @@
 			$htmlbody = $('html, body'),
 			addBind = {},
 			onMod = {},
+			runScrolling ={},
+			move = {},
 			mod,
 			nextIndexScreen,
+			transform3d,
+			transformPrefix,
+
 			oldValue;
 
       	var options = $.extend({
@@ -35,10 +40,11 @@
 	    	this.currentScreen = 0;
 			this.addClass(options.baseClass);
 			this.animationSpeed = options.animationSpeed,
+			this.moveTo = moveTo;
+
 			addCommonBind();
 			determineMod();
-
-	    	this.moveTo = scrollTo;
+			checkSupport3d();
 	    };
       	
 
@@ -62,7 +68,7 @@
 	    	$win.off('scroll.roller');
 	    }
 
-	    var scrollTo = function(direction) {
+	    var moveTo = function(direction) {
 	    	if(typeof direction  === 'string') {
 	    		direction === 'up' ? nextIndexScreen = $self.currentScreen - 1 : nextIndexScreen = $self.currentScreen + 1;
 	    	}
@@ -78,46 +84,53 @@
 	    		return;
 	    	}
 
-	    	console.log('run scroll');
 	    	$self.currentScreen = nextIndexScreen;
-	    	moveTo(nextIndexScreen)
+	    	runScrolling[mod][transform3d](nextIndexScreen)
 	    }
 
-	    var moveTo = function(index) {
-	    	checkSupport3d();
-
-	    	if($self.transformPrefix) {
-	    		moveTo = function(index) {
-	    			options.beforeMove(index);
-	    			$self.css('transform', 'translate3d(0, ' + index * -100 +'%, 0)');
-	    		}
-	    	} else {
-	    		moveTo = function(index) {
-	    			options.beforeMove(index);
-	    			$self.stop(true, true);
-			    	$self.animate({top: index * -100 + '%'}, $self.animationSpeed, function() {
-			    		options.afterMove(index);
-			    	});
-	    		}
-			}
-			moveTo(index);
-	    }
-
+		
 	    var checkSupport3d = function() {
 	        $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
 	        	if($self.css(val)) {
 	        		if($self.css(val).match(/matrix3d/)) {
-	        			$self.transformPrefix = val; 
+	        			transformPrefix = val; 
 	        			return
 	        		} else {
 	        			oldValue = $self.css(val);
 	        			$self.css(val, 'translate3d(0px, 0px, 1px)');
-		        		$self.css(val) && $self.css(val).match(/matrix3d/) ? $self.transformPrefix = val : '';
+		        		$self.css(val) && $self.css(val).match(/matrix3d/) ? transformPrefix = val : '';
 			        	$self.css(val, oldValue);
 	        		}
 	        	}
-	        })
+	        });
+
+	        transformPrefix ? transform3d = 'support3d' : transform3d = 'notSupport3d'
 	    }
+
+	    move['3d'] = function(index) {
+			options.beforeMove(index);
+			$self.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
+		};
+	    
+	    move['top'] = function(index) {
+			options.beforeMove(index);
+			$self.stop(true, true);
+	    	$self.animate({top: index * -100 + '%'}, $self.animationSpeed, function() {
+	    		options.afterMove(index);
+	    	});
+		};
+
+		move['toScreen'] = function(index) {
+			console.log('двигаем к скрину')
+		};
+
+		runScrolling[options.screenPageClass] = {};
+		runScrolling[options.screenPageClass]['support3d'] 		= move['3d'];
+		runScrolling[options.screenPageClass]['notSupport3d'] 	= move['top'];
+
+		runScrolling[options.solidPageClass] = {};
+		runScrolling[options.solidPageClass]['support3d'] 		= move['toScreen'];
+		runScrolling[options.solidPageClass]['notSupport3d'] 	= move['toScreen'];
 
 	    onMod[options.screenPageClass] = function() {
 	    	$html.addClass(options.screenPageClass);
@@ -142,10 +155,7 @@
 	    addBind[options.solidPageClass] = function() {
 	    	console.log('Добавляем бинды для ', options.solidPageClass)	
 	    }
-	    
 
-
-      	
 
       	init.call(this);
 
