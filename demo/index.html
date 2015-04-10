@@ -39,9 +39,10 @@
 			height: 100%;
 		}
 
-		.screen-solid .roller
+		.solid-page .roller
 		{
 			position: relative;
+            transform: none !important;
 		}
 
 		.solid-page .screen
@@ -50,6 +51,26 @@
 			border: 1px solid red;
 			margin: 20px;
 		}
+
+        .solid-page .screen:nth-child(1)
+        {
+            height: 500px;
+        }
+
+        .solid-page .screen:nth-child(2)
+        {
+            height: 200px;
+        }
+
+        .solid-page .screen:nth-child(3)
+        {
+            height: 800px;
+        }
+
+        .solid-page .screen:nth-child(4)
+        {
+            height: 300px;
+        }
 
 		.menu
 		{
@@ -69,6 +90,11 @@
 			background: rgba(255, 255, 0, 0.5);
 			cursor: pointer;
 		}
+
+        .menu li.current
+        {
+            background: rgba(255, 0, 255, 0.5);
+        }
 		.arrows
 		{
 			position: fixed;
@@ -87,6 +113,16 @@
 			cursor: pointer;
 			margin: 0 0 5px 0;
 		}
+        .uterus
+        {
+            position: fixed;
+            top:50%;
+            border: 1px solid red;
+            margin-top: -1px;
+            left: 0;
+            right: 0;
+        }
+
 
 	
 	</style>
@@ -102,6 +138,9 @@
 		<li>1</li>
 		<li>2</li>
 		<li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
 	</ul>
 	<ul class="arrows">
 		<li class="up">up</li>
@@ -111,25 +150,41 @@
 		<div class="screen">1</div>
 		<div class="screen">2</div>
 		<div class="screen">3</div>
+        <div class="screen">4</div>
+        <div class="screen">5</div>
+        <div class="screen">6</div>
 	</div>
+
+    <div class="uterus"></div>
 </body>
 </html>
 
 <script type="text/javascript">
 
-	var roller = $('.roller').roller();
 
-	$('.menu li').on('click', function() {
-		console.log($(this).index());
-		roller.moveTo($(this).index())
-	});
+    setCurrentItemMenu = function(index) {
+        $('.menu li').removeClass('current').eq(index).addClass('current');
+    };
 
-	$('.arrows .up').on('click', function() {
-		roller.moveTo('up');
-	});
+    $('.menu li').on('click', function() {
+        roller.moveTo($(this).index())
+    });
 
-	$('.arrows .down').on('click', function() {
-		roller.moveTo('down');
-	});
+    $('.arrows .up').on('click', function() {
+        roller.moveTo('up');
+    });
+
+    $('.arrows .down').on('click', function() {
+        roller.moveTo('down');
+    });
+
+    var roller = $('.roller').roller({
+        changeScreen: function(index) {
+            setCurrentItemMenu(index);
+        },
+        beforeMove: function(index) {
+            setCurrentItemMenu(index);
+        }
+    });
 	// roller.move();
 </script>

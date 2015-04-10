@@ -14,7 +14,10 @@
 			nextIndexScreen,
 			transform3d,
 			transformPrefix,
-
+            offsetScreens,
+            nearValue,
+            nearScreen,
+            animateNow,
 			oldValue;
 
       	var options = $.extend({
@@ -25,13 +28,11 @@
 			'minHeight' : 500,
 			'minWidth': 500,
 			'animationSpeed': 500,
-			'observer': $win,
 			'beforeMove': function(){},
 			'afterMove': function(){},
+            'changeScreen': function(){}
 
 	    }, options);
-
-
 
       	var init = function() {
 	    	console.log(options.screenClass);
@@ -39,12 +40,12 @@
 	    	this.countScreens = this.$screens.size();
 	    	this.currentScreen = 0;
 			this.addClass(options.baseClass);
-			this.animationSpeed = options.animationSpeed,
+			this.animationSpeed = options.animationSpeed;
 			this.moveTo = moveTo;
 
-			addCommonBind();
+            checkSupport3d();
+            addCommonBind();
 			determineMod();
-			checkSupport3d();
 	    };
       	
 
@@ -66,7 +67,7 @@
 
 	    var removeBinds = function() {
 	    	$win.off('scroll.roller');
-	    }
+	    };
 
 	    var moveTo = function(direction) {
 	    	if(typeof direction  === 'string') {
@@ -79,14 +80,13 @@
 
 	    	if( (nextIndexScreen < 0) ||
 	    		(nextIndexScreen > $self.countScreens - 1) ||
-	    		(nextIndexScreen === $self.currentScreen) ||
 	    		(typeof nextIndexScreen !== 'number') ) {
 	    		return;
 	    	}
 
 	    	$self.currentScreen = nextIndexScreen;
 	    	runScrolling[mod][transform3d](nextIndexScreen)
-	    }
+	    };
 
 		
 	    var checkSupport3d = function() {
@@ -94,7 +94,7 @@
 	        	if($self.css(val)) {
 	        		if($self.css(val).match(/matrix3d/)) {
 	        			transformPrefix = val; 
-	        			return
+	        			return;
 	        		} else {
 	        			oldValue = $self.css(val);
 	        			$self.css(val, 'translate3d(0px, 0px, 1px)');
@@ -105,7 +105,37 @@
 	        });
 
 	        transformPrefix ? transform3d = 'support3d' : transform3d = 'notSupport3d'
-	    }
+	    };
+
+        var calculateOffsetScreens = function() {
+            offsetScreens = [];
+            $self.$screens.each(function() {
+                offsetScreens.push($(this).offset().top);
+            });
+        };
+
+        var determineCurrentScreen = function(centerWindow) {
+            nearValue = 100000;
+            nearScreen = 0;
+
+            $.each(offsetScreens, function(i, val) {
+                if(Math.abs(centerWindow - val) < nearValue) {
+                    nearValue = centerWindow - val;
+                    nearScreen = i;
+                }
+            });
+            return nearScreen;
+        };
+
+        var checkPositionWindow = function() {
+            if(!animateNow) {
+                nearScreen = determineCurrentScreen($win.scrollTop());
+                if (nearScreen !== $self.currentScreen) {
+                    $self.currentScreen = nearScreen;
+                    options.changeScreen(nearScreen);
+                }
+            }
+        };
 
 	    move['3d'] = function(index) {
 			options.beforeMove(index);
@@ -121,7 +151,13 @@
 		};
 
 		move['toScreen'] = function(index) {
-			console.log('двигаем к скрину')
+            options.beforeMove(index);
+            animateNow = true;
+            $htmlbody.stop(true, true);
+            $htmlbody.animate({scrollTop: offsetScreens[$self.currentScreen]}, $self.animationSpeed, function() {
+                options.afterMove(index);
+                animateNow = false;
+            });
 		};
 
 		runScrolling[options.screenPageClass] = {};
@@ -138,32 +174,31 @@
 
     		removeBinds();
     		addBind[mod]();
-	    }
+            moveTo($self.currentScreen);
+	    };
 
 	    onMod[options.solidPageClass] = function() {
 	    	$html.addClass(options.solidPageClass);
     		$html.removeClass(options.screenPageClass);
 
-    		removeBinds();
+            calculateOffsetScreens();
+            removeBinds();
     		addBind[mod]();
-	    }
+            moveTo($self.currentScreen);
+	    };
 
 	    addBind[options.screenPageClass] = function() {
 	    	console.log('Добавляем бинды для ', options.screenPageClass);
-	    }
+	    };
 
 	    addBind[options.solidPageClass] = function() {
-	    	console.log('Добавляем бинды для ', options.solidPageClass)	
-	    }
-
+            $win.on('scroll.roller', function() {
+                checkPositionWindow();
+            });
+	    };
 
       	init.call(this);
 
       	return this;	
   	};
-
-
-
-  	console.log($.fn.roller);
-
 }(jQuery));
