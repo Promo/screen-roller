@@ -5,7 +5,9 @@
 		var $self = this,
 			$win = $(window),
 			$html = $('html'),
+            $body = $('body'),
 			$htmlbody = $('html, body'),
+            tempNode = $('<div></div>'),
 			addBind = {},
 			onMod = {},
 			runScrolling ={},
@@ -35,7 +37,6 @@
 	    }, options);
 
       	var init = function() {
-	    	console.log(options.screenClass);
 	    	this.$screens = this.find('.' + options.screenClass);
 	    	this.countScreens = this.$screens.size();
 	    	this.currentScreen = 0;
@@ -88,24 +89,18 @@
 	    	runScrolling[mod][transform3d](nextIndexScreen)
 	    };
 
-		
-	    var checkSupport3d = function() {
-	        $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
-	        	if($self.css(val)) {
-	        		if($self.css(val).match(/matrix3d/)) {
-	        			transformPrefix = val; 
-	        			return;
-	        		} else {
-	        			oldValue = $self.css(val);
-	        			$self.css(val, 'translate3d(0px, 0px, 1px)');
-		        		$self.css(val) && $self.css(val).match(/matrix3d/) ? transformPrefix = val : '';
-			        	$self.css(val, oldValue);
-	        		}
-	        	}
-	        });
 
-	        transformPrefix ? transform3d = 'support3d' : transform3d = 'notSupport3d'
-	    };
+        var checkSupport3d = function() {
+            $body.append(tempNode);
+
+            $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
+                tempNode.css(val, 'translate3d(1px, 1px, 1px)');
+                tempNode.css(val) && tempNode.css(val).match(/matrix3d/) ? transformPrefix = val : '';
+            });
+
+            tempNode.remove();
+            transform3d = transformPrefix ? 'support3d' : 'notSupport3d';
+        };
 
         var calculateOffsetScreens = function() {
             offsetScreens = [];
