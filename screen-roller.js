@@ -5,7 +5,7 @@
             $html = $('html'),
             $body = $('body'),
             $htmlbody = $('html, body'),
-            tempNode = $('<div></div>'),
+            $tempNode = $('<div></div>'),
             addBind = {},
             onMod = {},
             runScrolling ={},
@@ -17,8 +17,7 @@
             offsetScreens,
             nearValue,
             nearScreen,
-            animateNow,
-            oldValue;
+            animateNow;
 
         var options = $.extend({
             'baseClass': 'roller',
@@ -85,14 +84,14 @@
         };
 
         var checkSupport3d = function() {
-            $body.append(tempNode);
+            $body.append($tempNode);
 
             $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
-                tempNode.css(val, 'translate3d(1px, 1px, 1px)');
-                tempNode.css(val) && tempNode.css(val).match(/matrix3d/) ? transformPrefix = val : '';
+                $tempNode.css(val, 'translate3d(1px, 1px, 1px)');
+                $tempNode.css(val) && $tempNode.css(val).match(/matrix3d/) ? transformPrefix = val : '';
             });
 
-            tempNode.remove();
+            $tempNode.remove();
             transform3d = transformPrefix ? 'support3d' : 'notSupport3d';
         };
 
