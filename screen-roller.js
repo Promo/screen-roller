@@ -29,7 +29,9 @@
             'animationSpeed': 500,
             'beforeMove': function(){},
             'afterMove': function(){},
-            'changeScreen': function(){}
+            'changeScreen': function(){},
+            'onScreenMod': function(){},
+            'onSolidMod': function(){}
         }, options);
 
         var init = function() {
@@ -163,6 +165,7 @@
             removeBinds();
             addBind[mod]();
             moveTo($self.currentScreen);
+            options.onScreenMod();
         };
 
         onMod[options.solidPageClass] = function() {
@@ -173,6 +176,7 @@
             removeBinds();
             addBind[mod]();
             moveTo($self.currentScreen);
+            options.onSolidMod();
         };
 
         addBind[options.screenPageClass] = function() {
