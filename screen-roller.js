@@ -8,7 +8,7 @@
             $tempNode = $('<div></div>'),
             addBind = {},
             onMod = {},
-            runScrolling ={},
+            runScrolling = {},
             move = {},
             mod,
             nextIndexScreen,
@@ -27,6 +27,7 @@
             'minHeight' : 500,
             'minWidth': 500,
             'animationSpeed': 500,
+            'startScreen': 0,
             'beforeMove': function(){},
             'afterMove': function(){},
             'changeScreen': function(){},
@@ -37,10 +38,10 @@
         var init = function() {
             this.$screens = this.find('.' + options.screenClass);
             this.countScreens = this.$screens.size();
-            this.currentScreen = 0;
-            this.addClass(options.baseClass);
+            this.currentScreen = ~~options.startScreen;
             this.animationSpeed = options.animationSpeed;
             this.moveTo = moveTo;
+            this.addClass(options.baseClass);
 
             checkSupport3d();
             addCommonBind();
@@ -66,23 +67,25 @@
             $win.off('scroll.roller');
         };
 
-        var moveTo = function(direction) {
+        var moveTo = function(direction, speed) {
+            speed = (speed <= 0) ? speed : options.animationSpeed;
+
             if(typeof direction  === 'string') {
-            direction === 'up' ? nextIndexScreen = $self.currentScreen - 1 : nextIndexScreen = $self.currentScreen + 1;
-        }
+                direction === 'up' ? nextIndexScreen = $self.currentScreen - 1 : nextIndexScreen = $self.currentScreen + 1;
+            }
 
-        if(typeof direction === 'number') {
-            nextIndexScreen = direction;
-        }
+            if(typeof direction === 'number') {
+                nextIndexScreen = direction;
+            }
 
-        if( (nextIndexScreen < 0) ||
-            (nextIndexScreen > $self.countScreens - 1) ||
-            (typeof nextIndexScreen !== 'number') ) {
-                return;
-        }
+            if( (nextIndexScreen < 0) ||
+                (nextIndexScreen > $self.countScreens - 1) ||
+                (typeof nextIndexScreen !== 'number') ) {
+                    return;
+            }
 
-        $self.currentScreen = nextIndexScreen;
-            runScrolling[mod][transform3d](nextIndexScreen)
+            $self.currentScreen = nextIndexScreen;
+            runScrolling[mod][transform3d](nextIndexScreen, speed);
         };
 
         var checkSupport3d = function() {
@@ -127,24 +130,25 @@
             }
         };
 
-        move['3d'] = function(index) {
+        move['3d'] = function(index, speed) {
             options.beforeMove(index);
+            $self.css('transition-duration', speed / 1000 + 's');
             $self.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
         };
 
-        move['top'] = function(index) {
+        move['top'] = function(index, speed) {
             options.beforeMove(index);
             $self.stop(true, true);
-            $self.animate({top: index * -100 + '%'}, $self.animationSpeed, function() {
+            $self.animate({top: index * -100 + '%'}, speed, function() {
                 options.afterMove(index);
             });
         };
 
-        move['toScreen'] = function(index) {
+        move['toScreen'] = function(index, speed) {
             options.beforeMove(index);
             animateNow = true;
             $htmlbody.stop(true, true);
-            $htmlbody.animate({scrollTop: offsetScreens[$self.currentScreen]}, $self.animationSpeed, function() {
+            $htmlbody.animate({scrollTop: offsetScreens[$self.currentScreen]}, speed, function() {
                 options.afterMove(index);
                 animateNow = false;
             });
@@ -164,7 +168,7 @@
 
             removeBinds();
             addBind[mod]();
-            moveTo($self.currentScreen);
+            moveTo($self.currentScreen, 0);
             options.onScreenMod();
         };
 
@@ -172,10 +176,12 @@
             $html.addClass(options.solidPageClass);
             $html.removeClass(options.screenPageClass);
 
+            $self.attr('style', '');
+
             calculateOffsetScreens();
             removeBinds();
             addBind[mod]();
-            moveTo($self.currentScreen);
+            moveTo($self.currentScreen, 0);
             options.onSolidMod();
         };
 

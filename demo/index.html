@@ -43,7 +43,9 @@
 		.solid-page .roller
 		{
 			position: relative;
-            transform: none !important;
+            transform: none;
+            -webkit-transition-duration: 0s;
+            transition-duration: 0s;
 		}
 
 		.solid-page .screen
@@ -179,6 +181,7 @@
     });
 
     var roller = $('.roller').roller({
+        startScreen: '2',
         changeScreen: function(index) {
             setCurrentItemMenu(index);
         },
