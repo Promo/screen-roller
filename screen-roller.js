@@ -145,7 +145,7 @@
             });
         };
 
-        move['toScreen'] = function(index, speed) {
+        move['scrollTop'] = function(index, speed) {
             options.beforeMove(index);
             animateNow = true;
             $htmlbody.stop(true, true);
@@ -156,12 +156,12 @@
         };
 
         runScrolling[options.screenPageClass] = {};
-        runScrolling[options.screenPageClass]['support3d'] 		= move['3d'];
-        runScrolling[options.screenPageClass]['notSupport3d'] 	= move['top'];
+        runScrolling[options.screenPageClass]['support3d']      = move['3d'];
+        runScrolling[options.screenPageClass]['notSupport3d']   = move['top'];
 
         runScrolling[options.solidPageClass] = {};
-        runScrolling[options.solidPageClass]['support3d'] 		= move['toScreen'];
-        runScrolling[options.solidPageClass]['notSupport3d'] 	= move['toScreen'];
+        runScrolling[options.solidPageClass]['support3d']       = move['scrollTop'];
+        runScrolling[options.solidPageClass]['notSupport3d']    = move['scrollTop'];
 
         onMod[options.screenPageClass] = function() {
             $html.addClass(options.screenPageClass);
