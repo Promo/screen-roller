@@ -60,6 +60,7 @@
                 if(mod !== $self.mod) {
                     $self.mod = mod;
                     onMod[mod]();
+                    addBind[mod]();
                 }
         };
 
@@ -167,7 +168,6 @@
             $html.removeClass(options.solidPageClass);
 
             removeBinds();
-            addBind[mod]();
             moveTo($self.currentScreen, 0);
             options.onScreenMod();
         };
@@ -180,7 +180,6 @@
 
             calculateOffsetScreens();
             removeBinds();
-            addBind[mod]();
             moveTo($self.currentScreen, 0);
             options.onSolidMod();
         };
@@ -190,6 +189,7 @@
         };
 
         addBind[options.solidPageClass] = function() {
+            console.log('Добавляем бинды для ', options.solidPageClass);
             $win.on('scroll.roller', function() {
                 checkPositionWindow();
             });
