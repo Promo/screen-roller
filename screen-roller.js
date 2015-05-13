@@ -17,6 +17,7 @@
             transformPrefix,
             offsetScreens,
             nearValue,
+            animateTarget,
             nearScreen;
 
         var options = $.extend({
@@ -87,14 +88,14 @@
             }
 
             $self.currentScreen = nextIndexScreen;
-            runScrolling[mod][transform3d](nextIndexScreen, speed);
+
+            animateTarget = $self.mod === options.screenPageClass ?  $self : $htmlbody;
+
+            runScrolling[mod][transform3d].call(animateTarget, nextIndexScreen, speed);
 
             if(animateScrollBar !== false) {
                 if(options.showScrollBar && $self.mod !== 'solid-page') {
-                    removeBinds();
-                    $htmlbody.stop(false, false).animate({ scrollTop: nextIndexScreen * 1000 }, speed, function(){
-                        addBind[$self.mod]();
-                    });
+                    move['scrollTop'].call($htmlbody, nextIndexScreen, speed);
                 }
             }
         };
@@ -131,7 +132,7 @@
                 options.changeScreen(nearScreen);
 
                 if(options.showScrollBar && $self.mod !== 'solid-page') {
-                    $self.moveTo(nearScreen, options.speed, false);
+                    moveTo(nearScreen, options.speed, false);
                 }
             }
         };
@@ -149,14 +150,14 @@
 
         move['3d'] = function(index, speed) {
             options.beforeMove(index);
-            $self.css('transition-duration', speed / 1000 + 's');
-            $self.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
+            this.css('transition-duration', speed / 1000 + 's');
+            this.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
         };
 
         move['top'] = function(index, speed) {
             options.beforeMove(index);
-            $self.stop(false, true);
-            $self.animate({top: index * -100 + '%'}, speed, function() {
+            this.stop(false, true);
+            this.animate({top: index * -100 + '%'}, speed, function() {
                 options.afterMove(index);
             });
         };
@@ -164,8 +165,8 @@
         move['scrollTop'] = function(index, speed) {
             options.beforeMove(index);
             removeBinds();
-            $htmlbody.stop(false, false);
-            $htmlbody.animate({scrollTop: offsetScreens[$self.currentScreen]}, speed, function() {
+            this.stop(false, false);
+            this.animate({scrollTop: offsetScreens[$self.currentScreen]}, speed, function() {
                 options.afterMove(index);
                 addBind[$self.mod]();
             });
