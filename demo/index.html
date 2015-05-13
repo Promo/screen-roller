@@ -164,8 +164,9 @@
 
 <script type="text/javascript">
 
-    var indicator = new WheelIndicator().on(function(e) {
-        if(roller.mod !== 'solid-page') {
+    var indicator = new WheelIndicator({
+        preventMouse: true,
+        callback: function(e) {
             if(e.direction === 'down') {
                 roller.moveTo('down');
             }
@@ -173,9 +174,7 @@
             if(e.direction === 'up') {
                 roller.moveTo('up');
             }
-            e.prevent;
         }
-
     });
 
 
@@ -204,6 +203,12 @@
         },
         beforeMove: function(index) {
             setCurrentItemMenu(index);
+        },
+        onScreenMod: function() {
+            indicator.turnOn();
+        },
+        onSolidMod: function () {
+            indicator.turnOff();
         }
     });
 

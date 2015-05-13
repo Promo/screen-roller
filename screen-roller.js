@@ -28,6 +28,7 @@
             'minWidth': 500,
             'animationSpeed': 500,
             'startScreen': 0,
+            'showScrollBar': true,
             'beforeMove': function(){},
             'afterMove': function(){},
             'changeScreen': function(){},
@@ -87,6 +88,10 @@
 
             $self.currentScreen = nextIndexScreen;
             runScrolling[mod][transform3d](nextIndexScreen, speed);
+
+            if(options.showScrollBar && $self.mod !== 'solid-page') {
+                $htmlbody.animate({ scrollTop: nextIndexScreen * 1000 }, speed);
+            }
         };
 
         var checkSupport3d = function() {
@@ -131,6 +136,17 @@
             }
         };
 
+        var addStrut = function() {
+            if(options.showScrollBar) {
+                $tempNode.height(($self.countScreens - 1) * 1000);
+                $body.append($tempNode);
+            }
+        };
+
+        var removeStrut = function() {
+            $tempNode.remove();
+        };
+
         move['3d'] = function(index, speed) {
             options.beforeMove(index);
             $self.css('transition-duration', speed / 1000 + 's');
@@ -168,6 +184,7 @@
             $html.removeClass(options.solidPageClass);
 
             removeBinds();
+            addStrut();
             moveTo($self.currentScreen, 0);
             options.onScreenMod();
         };
@@ -180,6 +197,7 @@
 
             calculateOffsetScreens();
             removeBinds();
+            removeStrut();
             moveTo($self.currentScreen, 0);
             options.onSolidMod();
         };
