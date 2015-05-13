@@ -72,6 +72,7 @@
 
         var moveTo = function(direction, speed, animateScrollBar) {
             speed = (speed <= 0) ? speed : options.animationSpeed;
+            animateScrollBar = animateScrollBar === undefined ? true : animateScrollBar;
 
             if(typeof direction  === 'string') {
                 direction === 'up' ? nextIndexScreen = $self.currentScreen - 1 : nextIndexScreen = $self.currentScreen + 1;
@@ -93,7 +94,7 @@
 
             runScrolling[mod][transform3d].call(animateTarget, nextIndexScreen, speed);
 
-            if(animateScrollBar !== false) {
+            if(animateScrollBar === true) {
                 if(options.showScrollBar && $self.mod !== 'solid-page') {
                     move['scrollTop'].call($htmlbody, nextIndexScreen, speed);
                 }
