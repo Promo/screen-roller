@@ -21,12 +21,12 @@
 
         var options = $.extend({
             'baseClass': 'roller',
-            'screenClass'      : 'screen',
+            'screenClass': 'screen',
             'screenPageClass': 'screen-page',
             'solidPageClass': 'solid-page',
             'minHeight' : 500,
             'minWidth': 500,
-            'animationSpeed': 2500,
+            'animationSpeed': 500,
             'startScreen': 0,
             'showScrollBar': false,
             'beforeMove': function(){},
