@@ -103,7 +103,7 @@
             $body.append($tempNode);
 
             $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
-                $tempNode.css(val, 'translate3d(0, 0, 0)');
+                $tempNode.css(val, 'translate3d(-1px, 0px, -1px)');
                 $tempNode.css(val) && $tempNode.css(val).match(/matrix3d/) ? transformPrefix = val : '';
             });
 
