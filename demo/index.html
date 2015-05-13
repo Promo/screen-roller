@@ -129,6 +129,7 @@
 
 	</style>
 	<script src="jquery.js"></script>
+    <script src="wheel-indicator.js"></script>
 	<script src="../screen-roller.js"></script>
 <script>
 
@@ -163,9 +164,25 @@
 
 <script type="text/javascript">
 
+    var indicator = new WheelIndicator().on(function(e) {
+        if(roller.mod !== 'solid-page') {
+            if(e.direction === 'down') {
+                roller.moveTo('down');
+            }
+
+            if(e.direction === 'up') {
+                roller.moveTo('up');
+            }
+            e.prevent;
+        }
+
+    });
+
 
     setCurrentItemMenu = function(index) {
-        $('.menu li').removeClass('current').eq(index).addClass('current');
+        $('.menu li').removeClass('current')
+                     .eq(index)
+                     .addClass('current');
     };
 
     $('.menu li').on('click', function() {
@@ -189,6 +206,5 @@
             setCurrentItemMenu(index);
         }
     });
-//	roller.move();
-//    console.log(roller);
+
 </script>
