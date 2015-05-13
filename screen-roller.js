@@ -9,6 +9,7 @@
             addBind = {},
             onMod = {},
             runScrolling = {},
+            calculateOffsetScreens = {},
             move = {},
             mod,
             nextIndexScreen,
@@ -16,8 +17,7 @@
             transformPrefix,
             offsetScreens,
             nearValue,
-            nearScreen,
-            animateNow;
+            nearScreen;
 
         var options = $.extend({
             'baseClass': 'roller',
@@ -26,9 +26,9 @@
             'solidPageClass': 'solid-page',
             'minHeight' : 500,
             'minWidth': 500,
-            'animationSpeed': 500,
+            'animationSpeed': 2500,
             'startScreen': 0,
-            'showScrollBar': true,
+            'showScrollBar': false,
             'beforeMove': function(){},
             'afterMove': function(){},
             'changeScreen': function(){},
@@ -69,7 +69,7 @@
             $win.off('scroll.roller');
         };
 
-        var moveTo = function(direction, speed) {
+        var moveTo = function(direction, speed, animateScrollBar) {
             speed = (speed <= 0) ? speed : options.animationSpeed;
 
             if(typeof direction  === 'string') {
@@ -89,8 +89,13 @@
             $self.currentScreen = nextIndexScreen;
             runScrolling[mod][transform3d](nextIndexScreen, speed);
 
-            if(options.showScrollBar && $self.mod !== 'solid-page') {
-                $htmlbody.animate({ scrollTop: nextIndexScreen * 1000 }, speed);
+            if(animateScrollBar !== false) {
+                if(options.showScrollBar && $self.mod !== 'solid-page') {
+                    removeBinds();
+                    $htmlbody.stop(false, false).animate({ scrollTop: nextIndexScreen * 1000 }, speed, function(){
+                        addBind[$self.mod]();
+                    });
+                }
             }
         };
 
@@ -98,19 +103,12 @@
             $body.append($tempNode);
 
             $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
-                $tempNode.css(val, 'translate3d(1px, 1px, 1px)');
+                $tempNode.css(val, 'translate3d(0, 0, 0)');
                 $tempNode.css(val) && $tempNode.css(val).match(/matrix3d/) ? transformPrefix = val : '';
             });
 
             $tempNode.remove();
             transform3d = transformPrefix ? 'support3d' : 'notSupport3d';
-        };
-
-        var calculateOffsetScreens = function() {
-            offsetScreens = [];
-            $self.$screens.each(function() {
-                offsetScreens.push($(this).offset().top);
-            });
         };
 
         var determineCurrentScreen = function(centerWindow) {
@@ -127,11 +125,13 @@
         };
 
         var checkPositionWindow = function() {
-            if(!animateNow) {
-                nearScreen = determineCurrentScreen($win.scrollTop());
-                if (nearScreen !== $self.currentScreen) {
-                    $self.currentScreen = nearScreen;
-                    options.changeScreen(nearScreen);
+            nearScreen = determineCurrentScreen($win.scrollTop());
+            if (nearScreen !== $self.currentScreen) {
+                $self.currentScreen = nearScreen;
+                options.changeScreen(nearScreen);
+
+                if(options.showScrollBar && $self.mod !== 'solid-page') {
+                    $self.moveTo(nearScreen, options.speed, false);
                 }
             }
         };
@@ -155,7 +155,7 @@
 
         move['top'] = function(index, speed) {
             options.beforeMove(index);
-            $self.stop(true, true);
+            $self.stop(false, true);
             $self.animate({top: index * -100 + '%'}, speed, function() {
                 options.afterMove(index);
             });
@@ -163,11 +163,11 @@
 
         move['scrollTop'] = function(index, speed) {
             options.beforeMove(index);
-            animateNow = true;
-            $htmlbody.stop(true, true);
+            removeBinds();
+            $htmlbody.stop(false, false);
             $htmlbody.animate({scrollTop: offsetScreens[$self.currentScreen]}, speed, function() {
                 options.afterMove(index);
-                animateNow = false;
+                addBind[$self.mod]();
             });
         };
 
@@ -183,6 +183,7 @@
             $html.addClass(options.screenPageClass);
             $html.removeClass(options.solidPageClass);
 
+            calculateOffsetScreens[options.screenPageClass]();
             removeBinds();
             addStrut();
             moveTo($self.currentScreen, 0);
@@ -195,15 +196,32 @@
 
             $self.attr('style', '');
 
-            calculateOffsetScreens();
+            calculateOffsetScreens[options.solidPageClass]();
             removeBinds();
             removeStrut();
             moveTo($self.currentScreen, 0);
             options.onSolidMod();
         };
 
+        calculateOffsetScreens[options.screenPageClass] = function() {
+            offsetScreens = [];
+            $self.$screens.each(function() {
+                offsetScreens.push($(this).index() * 1000);
+            });
+        };
+
+        calculateOffsetScreens[options.solidPageClass] = function() {
+            offsetScreens = [];
+            $self.$screens.each(function() {
+                offsetScreens.push($(this).offset().top);
+            });
+        };
+
         addBind[options.screenPageClass] = function() {
             console.log('Добавляем бинды для ', options.screenPageClass);
+            $win.on('scroll.roller', function() {
+                checkPositionWindow();
+            });
         };
 
         addBind[options.solidPageClass] = function() {

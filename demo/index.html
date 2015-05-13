@@ -199,6 +199,7 @@
     var roller = $('.roller').roller({
         startScreen: '2',
         changeScreen: function(index) {
+            console.log('changeScreen');
             setCurrentItemMenu(index);
         },
         beforeMove: function(index) {
