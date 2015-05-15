@@ -71,7 +71,7 @@
         };
 
         var moveTo = function(direction, speed, animateScrollBar) {
-            speed = (speed <= 0) ? speed : options.animationSpeed;
+            speed = (speed >= 0) ? speed : options.animationSpeed;
             animateScrollBar = animateScrollBar === undefined ? true : animateScrollBar;
 
             if(typeof direction  === 'string') {
