@@ -151,8 +151,14 @@
 
         move['3d'] = function(index, speed) {
             options.beforeMove(index);
+
             this.css('transition-duration', speed / 1000 + 's');
             this.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
+
+            this.off('transitionend webkitTransitionEnd');
+            this.one('transitionend webkitTransitionEnd', function(e) {
+                options.afterMove(index);
+            });
         };
 
         move['top'] = function(index, speed) {
