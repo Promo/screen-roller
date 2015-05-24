@@ -93,7 +93,7 @@
             animateTarget = $self.mod === options.screenPageClass ?  $self : $htmlbody;
 
             runScrolling[mod][transform3d].call(animateTarget, nextIndexScreen, speed);
-
+            
             if(animateScrollBar === true) {
                 if(options.showScrollBar && $self.mod !== 'solid-page') {
                     move['scrollTop'].call($htmlbody, nextIndexScreen, speed);
@@ -173,6 +173,7 @@
             options.beforeMove(index);
             removeBinds();
             this.stop(false, false);
+
             this.animate({scrollTop: offsetScreens[$self.currentScreen]}, speed, function() {
                 options.afterMove(index);
                 addBind[$self.mod]();
@@ -194,7 +195,7 @@
             calculateOffsetScreens[options.screenPageClass]();
             removeBinds();
             addStrut();
-            moveTo($self.currentScreen, 0);
+            moveTo($self.currentScreen, 0, true);
             options.onScreenMod();
         };
 
@@ -227,6 +228,7 @@
 
         addBind[options.screenPageClass] = function() {
             console.log('Добавляем бинды для ', options.screenPageClass);
+            $win.off('scroll.roller');
             $win.on('scroll.roller', function() {
                 checkPositionWindow();
             });
@@ -234,6 +236,7 @@
 
         addBind[options.solidPageClass] = function() {
             console.log('Добавляем бинды для ', options.solidPageClass);
+            $win.off('scroll.roller');
             $win.on('scroll.roller', function() {
                 checkPositionWindow();
             });
