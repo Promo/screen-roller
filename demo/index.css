@@ -1,0 +1,87 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+.solid-page .screen
+{
+    height: 300px;
+    margin: 20px;
+}
+.solid-page .screen:nth-child(1)
+{
+    height: 500px;
+}
+.solid-page .screen:nth-child(2)
+{
+    height: 200px;
+}
+.solid-page .screen:nth-child(3)
+{
+    height: 800px;
+}
+.solid-page .screen:nth-child(4)
+{
+    height: 300px;
+}
+.screen:nth-child(1)
+{
+    background: rgba(0, 255, 0, 0.3);
+}
+.screen:nth-child(2)
+{
+    background: rgba(0, 0, 255, 0.3);
+}
+.screen:nth-child(3)
+{
+    background: rgba(255, 0, 0, 0.3);
+}
+.screen:nth-child(4)
+{
+    background: rgba(255, 255, 0, 0.3);
+}
+.screen:nth-child(5)
+{
+    background: rgba(0, 255, 255, 0.3);
+}
+.screen:nth-child(6)
+{
+    background: rgba(255, 0, 255, 0.3);
+}
+.menu
+{
+    list-style: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 20;
+}
+.menu li
+{
+    display: inline-block;
+    text-align: center;
+    width: 40px;
+    line-height: 40px;
+    background: rgba(255, 255, 0, 0.5);
+    cursor: pointer;
+}
+.menu li.current
+{
+    background: rgba(255, 0, 255, 0.5);
+}
+.arrows
+{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    list-style: none;
+}
+.arrows li
+{
+    text-align: center;
+    width: 40px;
+    line-height: 40px;
+    background: rgba(255, 255, 0, 0.5);
+    cursor: pointer;
+    margin: 0 0 5px 0;
+}

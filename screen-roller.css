@@ -1,0 +1,21 @@
+.solid-page .roller
+{
+    position: relative;
+    transform: none;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+}
+.screen-page .roller
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: transform 0.5s linear;
+    transition: transform 0.5s linear;
+}
+.screen-page .screen
+{
+    height: 100%;
+}
