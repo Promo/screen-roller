@@ -30,6 +30,7 @@
             'animationSpeed': 500,
             'startScreen': 0,
             'showScrollBar': false,
+            'afterInit': function(){},
             'beforeMove': function(){},
             'afterMove': function(){},
             'changeScreen': function(){},
@@ -48,6 +49,8 @@
             checkSupport3d();
             addCommonBind();
             determineMod();
+            
+            options.afterInit();
         };
 
         var addCommonBind = function() {
