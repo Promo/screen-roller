@@ -30,6 +30,7 @@
             'animationSpeed': 500,
             'startScreen': 0,
             'showScrollBar': false,
+            'afterInit': function(){},
             'beforeMove': function(){},
             'afterMove': function(){},
             'changeScreen': function(){},
@@ -48,6 +49,8 @@
             checkSupport3d();
             addCommonBind();
             determineMod();
+
+            options.afterInit();
         };
 
         var addCommonBind = function() {
@@ -59,11 +62,11 @@
         var determineMod = function() {
             (($win.height() > options.minHeight) &&
             ( $win.width()  > options.minWidth)) ?  mod = options.screenPageClass : mod = options.solidPageClass;
-                if(mod !== $self.mod) {
-                    $self.mod = mod;
-                    onMod[mod]();
-                    addBind[mod]();
-                }
+            if(mod !== $self.mod) {
+                $self.mod = mod;
+                onMod[mod]();
+                addBind[mod]();
+            }
         };
 
         var removeBinds = function() {
@@ -85,7 +88,7 @@
             if( (nextIndexScreen < 0) ||
                 (nextIndexScreen > $self.countScreens - 1) ||
                 (typeof nextIndexScreen !== 'number') ) {
-                    return;
+                return;
             }
 
             $self.currentScreen = nextIndexScreen;
@@ -93,7 +96,7 @@
             animateTarget = $self.mod === options.screenPageClass ?  $self : $htmlbody;
 
             runScrolling[mod][transform3d].call(animateTarget, nextIndexScreen, speed);
-            
+
             if(animateScrollBar === true) {
                 if(options.showScrollBar && $self.mod !== 'solid-page') {
                     move['scrollTop'].call($htmlbody, nextIndexScreen, speed);
