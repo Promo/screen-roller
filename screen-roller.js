@@ -16,7 +16,6 @@
             transform3d,
             transformPrefix,
             offsetScreens,
-            nearValue,
             animateTarget,
             nearScreen;
 
@@ -117,8 +116,8 @@
         };
 
         var determineCurrentScreen = function(centerWindow) {
-            nearValue = 100000;
-            nearScreen = 0;
+            var nearValue = Infinity,
+                nearScreen;
 
             $.each(offsetScreens, function(i, val) {
                 if(Math.abs(centerWindow - val) < nearValue) {
