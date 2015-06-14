@@ -1,5 +1,5 @@
 # screen-roller
-
+[![Build Status][travis-image]][travis-url]  
 jQuery-плагин для полноэкранного просмотра слайдов с возможностью переключения в стандартый режим отображения сайта (для маленьких экранов).
 
 ## Подключение
@@ -67,11 +67,6 @@ roller.moveTo('up', 1000);
 roller.moveTo(4, 0);
 ```
 
-
-
-
-
-
-
-
-
+[travis-url]: http://travis-ci.org/Promo/screen-roller
+[travis-image]: http://img.shields.io/travis/f0rmat1k/bemy.svg?branch=master&style=flat
+[travis-image]: http://img.shields.io/travis/Promo/screen-roller.svg?branch=master&style=flat

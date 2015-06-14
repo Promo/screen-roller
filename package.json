@@ -22,7 +22,6 @@
   "devDependencies": {
     "browserstack-webdriver": "^2.41.1",
     "mocha": "^2.2.5",
-    "should": "^6.0.3",
-    "wd": "^0.3.12"
+    "should": "^6.0.3"
   }
 }
