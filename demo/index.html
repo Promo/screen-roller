@@ -43,13 +43,7 @@
     var indicator = new WheelIndicator({
         preventMouse: true,
         callback: function(e) {
-            if(e.direction === 'down') {
-                roller.moveTo('down');
-            }
-
-            if(e.direction === 'up') {
-                roller.moveTo('up');
-            }
+            roller.moveTo(e.direction);
         }
     });
 
