@@ -20,7 +20,7 @@
             animateTarget,
             nearScreen;
 
-        var options = $.extend({
+        options = $.extend({
             'baseClass': 'roller',
             'screenClass': 'screen',
             'screenPageClass': 'screen-page',
@@ -60,8 +60,8 @@
         };
 
         var determineMod = function() {
-            (($win.height() > options.minHeight) &&
-            ( $win.width()  > options.minWidth)) ?  mod = options.screenPageClass : mod = options.solidPageClass;
+            var rollerOn = $win.height() > options.minHeight && $win.width() > options.minWidth;
+            mod = rollerOn ? options.screenPageClass : options.solidPageClass;
                 if(mod !== $self.mod) {
                     $self.mod = mod;
                     onMod[mod]();
@@ -78,7 +78,7 @@
             animateScrollBar = animateScrollBar === undefined ? true : animateScrollBar;
 
             if(typeof direction  === 'string') {
-                direction === 'up' ? nextIndexScreen = $self.currentScreen - 1 : nextIndexScreen = $self.currentScreen + 1;
+                nextIndexScreen = $self.currentScreen + direction === 'up' ? - 1 : 1;
             }
 
             if(typeof direction === 'number') {
@@ -113,7 +113,7 @@
             });
 
             $tempNode.remove();
-            transform3d = transformPrefix ? 'support3d' : 'notSupport3d';
+            transform3d = transformPrefix ? 'support3d' : 'dontSupport3d';
         };
 
         var determineCurrentScreen = function(centerWindow) {
@@ -159,7 +159,7 @@
             this.css(transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
 
             this.off('transitionend webkitTransitionEnd');
-            this.one('transitionend webkitTransitionEnd', function(e) {
+            this.one('transitionend webkitTransitionEnd', function() {
                 options.afterMove(index);
             });
         };
@@ -185,11 +185,11 @@
 
         runScrolling[options.screenPageClass] = {};
         runScrolling[options.screenPageClass]['support3d']      = move['3d'];
-        runScrolling[options.screenPageClass]['notSupport3d']   = move['top'];
+        runScrolling[options.screenPageClass]['dontSupport3d']   = move['top'];
 
         runScrolling[options.solidPageClass] = {};
         runScrolling[options.solidPageClass]['support3d']       = move['scrollTop'];
-        runScrolling[options.solidPageClass]['notSupport3d']    = move['scrollTop'];
+        runScrolling[options.solidPageClass]['dontSupport3d']    = move['scrollTop'];
 
         onMod[options.screenPageClass] = function() {
             $html.addClass(options.screenPageClass);
@@ -230,7 +230,6 @@
         };
 
         addBind[options.screenPageClass] = function() {
-            console.log('Добавляем бинды для ', options.screenPageClass);
             $win.off('scroll.roller');
             $win.on('scroll.roller', function() {
                 checkPositionWindow();
@@ -238,7 +237,6 @@
         };
 
         addBind[options.solidPageClass] = function() {
-            console.log('Добавляем бинды для ', options.solidPageClass);
             $win.off('scroll.roller');
             $win.on('scroll.roller', function() {
                 checkPositionWindow();
