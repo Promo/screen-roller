@@ -42,10 +42,14 @@
             this.countScreens = this.$screens.size();
             this.currentScreen = ~~options.startScreen;
             this.animationSpeed = options.animationSpeed;
+
             this.moveTo = moveTo;
+            this.updatePosition = updatePosition;
+            this.getOffset = getOffset;
             this.addClass(options.baseClass);
 
             checkSupport3d();
+            checkOnTouch();
             addCommonBind();
             determineMod();
 
@@ -115,6 +119,27 @@
             transform3d = transformPrefix ? 'support3d' : 'notSupport3d';
         };
 
+        var checkOnTouch = function() {
+            if("ontouchstart" in window || navigator.msMaxTouchPoints) {
+                options.showScrollBar = false;
+            }
+        };
+
+        var getOffset = function() {
+            var cssValue = $self.css(transformPrefix).match(/matrix(?:(3d)\(-{0,1}\d+(?:, -{0,1}\d+)*(?:, (-{0,1}\d+))(?:, (-{0,1}\d+))(?:, (-{0,1}\d+)), -{0,1}\d+\)|\(-{0,1}\d+(?:, -{0,1}\d+)*(?:, (-{0,1}\d+))(?:, (-{0,1}\d+))\))/);
+
+            if(!cssValue) return [0, 0, 0];
+            if(cssValue[1] == '3d') {
+                return cssValue.slice(2, 5);
+            }
+
+            return cssValue.slice(5, 7);
+        };
+
+        var updatePosition = function(y) {
+            $self.css(transformPrefix, 'translate3d(0, ' + y +'px, 0)');
+        };
+
         var determineCurrentScreen = function(centerWindow) {
             var nearValue = Infinity,
                 nearScreen;
@@ -129,6 +154,7 @@
         };
 
         var checkPositionWindow = function() {
+
             nearScreen = determineCurrentScreen($win.scrollTop());
             if (nearScreen !== $self.currentScreen) {
                 $self.currentScreen = nearScreen;
@@ -232,7 +258,9 @@
             console.log('Добавляем бинды для ', options.screenPageClass);
             $win.off('scroll.roller');
             $win.on('scroll.roller', function() {
-                checkPositionWindow();
+                if(options.showScrollBar) {
+                    checkPositionWindow();
+                }
             });
         };
 
