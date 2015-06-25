@@ -29,6 +29,7 @@
             'animationSpeed': 500,
             'startScreen': 0,
             'showScrollBar': false,
+            'beforeInit': function(){},
             'afterInit': function(){},
             'beforeMove': function(){},
             'afterMove': function(){},
@@ -38,9 +39,12 @@
         }, options);
 
         var init = function() {
+            options.beforeInit();
+
             this.$screens = this.find('.' + options.screenClass);
             this.countScreens = this.$screens.size();
-            this.currentScreen = ~~options.startScreen;
+            //currentScreen может быть назначен при beforeInit (например значением хеша)
+            this.currentScreen = this.currentScreen || ~~options.startScreen;
             this.animationSpeed = options.animationSpeed;
 
             this.moveTo = moveTo;
