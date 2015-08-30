@@ -5,7 +5,7 @@
     -webkit-transition-duration: 0s;
     transition-duration: 0s;
 }
-.screen-page .roller
+.screen-page.roller
 {
     position: fixed;
     top: 0;

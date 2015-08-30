@@ -8,7 +8,7 @@
     <script src="../vendors/jquery.js"></script>
     <script src="../vendors/wheel-indicator.js"></script>
     <script src="../vendors/hammer.js"></script>
-    <script src="../screen-roller.js"></script>
+    <script src="../screen-roller-2.1.js"></script>
 </head>
 <body>
 <ul class="menu">
@@ -69,9 +69,9 @@
             roller.moveTo('down');
         });
 
-        var roller = $('.roller').roller({
+        var roller = $('.roller').screenroller({
             showScrollBar: true,
-            startScreen: '2',
+            startScreen: 2,
             changeScreen: function(index) {
                 setCurrentItemMenu(index);
             },
