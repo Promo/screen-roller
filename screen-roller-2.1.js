@@ -25,10 +25,13 @@
             'screenClass': 'screen',
             'screenPageClass': 'screen-page',
             'solidPageClass': 'solid-page',
+            'minHeight' : 500,
+            'minWidth': 500,
             'startScreen': null,
             'beforeInit': function(){},
             'afterInit': function(){},
-            'afterMove': function(){}
+            'afterMove': function(){},
+            'changeScreen': function() {}
         }, options);
 
         roller.$screens = this.find('.' + options.screenClass);
@@ -45,9 +48,11 @@
 
     var methods = $.fn.screenroller.prototype;
 
+    methods.build = {};
+
     methods.init = function() {
         this.roller.beforeInit();
-
+        
         this.addClass(this.roller.baseClass);
         this.addClass(this.roller.screenPageClass);
 
@@ -55,6 +60,11 @@
         this.moveTo = methods.moveTo;
 
         this.moveTo(this.roller.currentScreen, 0);
+
+        methods.build.solidMod && methods.determineMod.call(this);
+        methods.build.solidMod && methods.bindChangeMod.call(this);
+
+
         this.roller.afterInit();
     };
 
@@ -64,6 +74,7 @@
 
     methods.moveTo = function(direction, speed) {
         var nextScreen = methods.getNextScreen.call(this, direction);
+
 
         if(nextScreen >= 0) {
             speed = (speed >= 0) ? speed : this.roller.animationSpeed;
@@ -76,7 +87,7 @@
         var nextIndexScreen;
 
         if(typeof direction  === 'string') {
-            direction === 'up' ? nextIndexScreen = this.roller.currentScreen - 1 : nextIndexScreen = this.roller.currentScreen + 1;
+            nextIndexScreen = (direction === 'up') ? this.roller.currentScreen - 1 : this.roller.currentScreen + 1;
         }
 
         if(typeof direction === 'number') {
@@ -100,7 +111,7 @@
         this.css(this.roller.transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
 
         this.off('transitionend webkitTransitionEnd');
-        this.one('transitionend webkitTransitionEnd', function(e) {
+        this.one('transitionend webkitTransitionEnd', function() {
             $self.roller.afterMove(index);
         });
     };
@@ -110,15 +121,13 @@
         methods.move3d.call(this, index, speed);
     };
 
-    $.fn.screenroller.prototype.build = {};
-
 }(jQuery));
 
 (function($){
     //support old browsers
     var methods = $.fn.screenroller.prototype;
 
-    $.fn.screenroller.prototype.build.oldBrowsers = true;
+    methods.build.oldBrowsers = true;
 
     methods.moveTop = function(index, speed) {
         var $self = this;
@@ -130,10 +139,139 @@
     };
 
     methods.roll = function(index, speed) {
+        methods.rollScreenMod.call(this, index, speed);
+    };
+
+    methods.rollScreenMod = function(index, speed) {
         if(this.roller.support3d) {
             methods.move3d.call(this, index, speed);
         } else {
             methods.moveTop.call(this, index, speed);
         }
-    };
+    }
 }(jQuery));
+
+//support solid mod
+(function($){
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.solidMod = true;
+
+    methods.determineMod = function() {
+        var $win = $(window),
+            mod;
+
+        mod = (($win.height() > this.roller.minHeight) &&
+               ($win.width()  > this.roller.minWidth)) ?  'screen' : 'solid';
+
+        if(mod !== this.roller.mod) {
+            this.roller.mod = mod;
+
+            methods.setMod[mod].call(this);
+            //onMod[mod]();
+            //addBind[mod]();
+        }
+
+    };
+
+    methods.bindChangeMod = function() {
+        var $self = this;
+
+        $(window).on('resize.roller', function() {
+            methods.determineMod.call($self);
+        });
+    };
+
+    methods.setMod = {};
+
+    methods.setMod['screen'] = function() {
+        this.removeClass(this.roller.solidPageClass);
+        this.addClass(this.roller.screenPageClass);
+
+        this.moveTo(this.roller.currentScreen, 0);
+
+        methods.removeScrollListener();
+
+        this.roller.onScreenMod();
+    };
+
+    methods.setMod['solid'] = function() {
+        this.removeClass(this.roller.screenPageClass);
+        this.addClass(this.roller.solidPageClass);
+
+        this.attr('style', '');
+
+        this.moveTo(this.roller.currentScreen, 0);
+
+        methods.spotOffsetsScreens.call(this);
+        methods.addScrollListener.call(this);
+        
+        this.roller.onSolidMod();
+    };
+
+    methods.moveScrollTop = function(index, speed) {
+        var $self = this,
+            scrollTop = this.roller.$screens.eq(this.roller.currentScreen).offset().top;
+
+        this.roller.beforeMove(index);
+        this.stop(false, false);
+        $('html').animate({scrollTop: scrollTop}, speed, function() {
+            $self.roller.afterMove(index);
+        });
+    };
+
+    methods.roll = function(index, speed) {
+        if(this.roller.mod === 'screen') {
+            methods.rollScreenMod.call(this, index, speed);
+        } else {
+            methods.moveScrollTop.call(this, index, speed);
+        }
+    };
+
+    methods.addScrollListener = function() {
+        var $self = this;
+        $(window).on('scroll.screenroller', function() {
+            methods.checkNearScreen.call($self)
+        });
+    };
+
+    methods.removeScrollListener = function() {
+        $(window).off('scroll.screenroller');
+    };
+
+    methods.checkNearScreen = function() {
+        var nearestToCentre = methods.spotNearScreen.call(this);
+
+        if (nearestToCentre !== this.roller.currentScreen) {
+            this.roller.currentScreen = nearestToCentre;
+            this.roller.changeScreen(nearestToCentre);
+        }
+    };
+
+    methods.spotNearScreen = function() {
+
+        var windowScrollTop = $(window).scrollTop(),
+            nearValue = Infinity,
+            nearest;
+
+        $.each(this.roller.offsetScreens, function(index, val) {
+            if(Math.abs(windowScrollTop - val) < nearValue) {
+                nearValue = windowScrollTop - val;
+                nearest = index;
+            }
+        });
+        return nearest;
+    };
+
+    methods.spotOffsetsScreens = function() {
+        var $self = this;
+
+        this.roller.offsetScreens = [];
+        this.roller.$screens.each(function() {
+            $self.roller.offsetScreens.push($(this).offset().top);
+        });
+    };
+
+
+}(jQuery));
+
