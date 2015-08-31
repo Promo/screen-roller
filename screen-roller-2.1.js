@@ -92,7 +92,7 @@
         return nextIndexScreen;
     };
 
-    methods.roll = function(index, speed) {
+    methods.move3d = function(index, speed) {
         var $self = this;
         this.roller.beforeMove(index);
 
@@ -103,6 +103,37 @@
         this.one('transitionend webkitTransitionEnd', function(e) {
             $self.roller.afterMove(index);
         });
-    }
+    };
 
+    //тут выбираем стратегию для прокрутки. По умолчанию это 3d
+    methods.roll = function(index, speed) {
+        methods.move3d.call(this, index, speed);
+    };
+
+    $.fn.screenroller.prototype.build = {};
+
+}(jQuery));
+
+(function($){
+    //support old browsers
+    var methods = $.fn.screenroller.prototype;
+
+    $.fn.screenroller.prototype.build.oldBrowsers = true;
+
+    methods.moveTop = function(index, speed) {
+        var $self = this;
+        this.roller.beforeMove(index);
+        this.stop(false, true);
+        this.animate({top: index * -100 + '%'}, speed, function() {
+            $self.roller.afterMove(index);
+        });
+    };
+
+    methods.roll = function(index, speed) {
+        if(this.roller.support3d) {
+            methods.move3d.call(this, index, speed);
+        } else {
+            methods.moveTop.call(this, index, speed);
+        }
+    };
 }(jQuery));
