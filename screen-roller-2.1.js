@@ -73,15 +73,20 @@
     };
 
     methods.moveTo = function(direction, speed) {
-        var nextScreen = methods.getNextScreen.call(this, direction);
+        var nextScreen = methods.getNextScreen.call(this, direction),
+            animateFunction;
 
 
         if(nextScreen >= 0) {
             speed = (speed >= 0) ? speed : this.roller.animationSpeed;
             this.roller.currentScreen = nextScreen;
-            methods.roll.call(this, nextScreen, speed);
+
+            animateFunction = methods.selectAnimate.call(this);
+            animateFunction.call(this, nextScreen, speed);
         }
     };
+
+
 
     methods.getNextScreen = function(direction) {
         var nextIndexScreen;
@@ -116,9 +121,12 @@
         });
     };
 
-    //тут выбираем стратегию для прокрутки. По умолчанию это 3d
-    methods.roll = function(index, speed) {
-        methods.move3d.call(this, index, speed);
+    methods.selectAnimate = function() {
+        return methods.selectPropertyAnimate.call(this);
+    };
+
+    methods.selectPropertyAnimate = function() {
+        return methods.move3d
     };
 
 }(jQuery));
@@ -138,17 +146,13 @@
         });
     };
 
-    methods.roll = function(index, speed) {
-        methods.rollScreenMod.call(this, index, speed);
-    };
-
-    methods.rollScreenMod = function(index, speed) {
+    methods.selectPropertyAnimate = function() {
         if(this.roller.support3d) {
-            methods.move3d.call(this, index, speed);
+            return methods.move3d;
         } else {
-            methods.moveTop.call(this, index, speed);
+            return methods.moveTop;
         }
-    }
+    };
 }(jQuery));
 
 //support solid mod
@@ -166,12 +170,8 @@
 
         if(mod !== this.roller.mod) {
             this.roller.mod = mod;
-
             methods.setMod[mod].call(this);
-            //onMod[mod]();
-            //addBind[mod]();
         }
-
     };
 
     methods.bindChangeMod = function() {
@@ -205,7 +205,7 @@
 
         methods.spotOffsetsScreens.call(this);
         methods.addScrollListener.call(this);
-        
+
         this.roller.onSolidMod();
     };
 
@@ -218,14 +218,6 @@
         $('html').animate({scrollTop: scrollTop}, speed, function() {
             $self.roller.afterMove(index);
         });
-    };
-
-    methods.roll = function(index, speed) {
-        if(this.roller.mod === 'screen') {
-            methods.rollScreenMod.call(this, index, speed);
-        } else {
-            methods.moveScrollTop.call(this, index, speed);
-        }
     };
 
     methods.addScrollListener = function() {
@@ -272,6 +264,12 @@
         });
     };
 
-
+    methods.selectAnimate = function(index, speed) {
+        if(this.roller.mod === 'screen') {
+            return methods.selectPropertyAnimate.call(this, index, speed);
+        } else {
+            return methods.moveScrollTop;
+        }
+    }
 }(jQuery));
 
