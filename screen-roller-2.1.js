@@ -213,7 +213,7 @@
 
         this.roller.beforeMove(index);
         this.stop(false, false);
-        $('html').animate({scrollTop: scrollTop}, speed, function() {
+        $('html, body').animate({scrollTop: scrollTop}, speed, function() {
             $self.roller.afterMove(index);
         });
     };
