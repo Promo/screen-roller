@@ -1,23 +1,7 @@
 (function($){
-    var data3d = (function(){
-        var $tempNode = $('<div></div>'),
-            result = {};
-
-        $('body').append($tempNode);
-
-        $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
-            $tempNode.css(val, 'translate3d(-1px, 0px, -1px)');
-            $tempNode.css(val) && $tempNode.css(val).match(/matrix3d/) ? result.transformPrefix = val : '';
-        });
-
-        $tempNode.remove();
-        result.transform3d = result.transformPrefix ? 'support3d' : 'notSupport3d';
-
-        return result;
-    }());
-    
     $.fn.screenroller = function(options) {
-        var roller = {};
+        var roller = {},
+            data3d = methods.get3dData();
 
         options = $.extend({
             animationSpeed: 500,
@@ -26,7 +10,7 @@
             'screenPageClass': 'screen-page',
             'solidPageClass': 'solid-page',
             'minHeight' : 500,
-            'minWidth': 500,
+            'minWidth': 700,
             'startScreen': null,
             'beforeInit': function(){},
             'afterInit': function(){},
@@ -64,7 +48,6 @@
         methods.build.solidMod && methods.determineMod.call(this);
         methods.build.solidMod && methods.bindChangeMod.call(this);
 
-
         this.roller.afterInit();
     };
 
@@ -86,7 +69,22 @@
         }
     };
 
+    methods.get3dData = function() {
+        var $tempNode = $('<div></div>'),
+            result = {};
 
+        $('body').append($tempNode);
+
+        $.each([ '-webkit-transform', '-o-transform',  '-ms-transform', '-moz-transform', 'transform' ], function(i, val) {
+            $tempNode.css(val, 'translate3d(-1px, 0px, -1px)');
+            $tempNode.css(val) && $tempNode.css(val).match(/matrix3d/) ? result.transformPrefix = val : '';
+        });
+
+        $tempNode.remove();
+        result.transform3d = result.transformPrefix ? 'support3d' : 'notSupport3d';
+
+        return result;
+    };
 
     methods.getNextScreen = function(direction) {
         var nextIndexScreen;
