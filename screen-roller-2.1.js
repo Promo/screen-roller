@@ -212,7 +212,7 @@
             scrollTop = this.roller.$screens.eq(this.roller.currentScreen).offset().top;
 
         this.roller.beforeMove(index);
-        this.stop(false, false);
+        $('html, body').stop(false, false);
         methods.removeScrollListener.call(this);
         $('html, body').animate({scrollTop: scrollTop}, speed, function() {
             methods.addScrollListener.call($self);
