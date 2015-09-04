@@ -45,12 +45,21 @@
 
         this.moveTo(this.roller.currentScreen, 0);
 
-        methods.build.solidMod && methods.determineMod.call(this);
-        methods.build.solidMod && methods.bindChangeMod.call(this);
+        methods.initModules.call(this);
 
         this.roller.afterInit();
     };
 
+    methods.initModules = function() {
+        var m,
+            initFunction;
+        
+        for(m in methods.build) {
+            initFunction = methods[m + 'Init'];
+            initFunction && initFunction.call(this);
+        }
+    };
+    
     methods.getFirstScreen = function() {
         return this.roller.startScreen ? this.roller.startScreen : 0;
     };
@@ -158,6 +167,11 @@
     var methods = $.fn.screenroller.prototype;
 
     methods.build.solidMod = true;
+
+    methods.solidModInit = function() {
+        methods.determineMod.call(this);
+        methods.bindChangeMod.call(this);
+    };
 
     methods.determineMod = function() {
         var $win = $(window),
