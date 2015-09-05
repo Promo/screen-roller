@@ -320,15 +320,18 @@
     };
     
     methods.bindEventsHash = function() {
-        var c = this;
+        var c = this,
+            timer;
+
         methods.onEventChangeHash.call(c);
 
         c.on('changeCurrentScreen', function(e, data) {
             methods.offEventChangeHash.call(c);
             methods.changeHashByIndex.call(c, data.index);
-            setTimeout(function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
                 methods.onEventChangeHash.call(c);
-            }, 0)
+            }, 100);
         });
     };
 
