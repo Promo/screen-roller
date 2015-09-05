@@ -24,12 +24,12 @@
     <li class="down">down</li>
 </ul>
 <div class="roller">
-    <div class="screen">1</div>
-    <div class="screen">2</div>
-    <div class="screen">3</div>
-    <div class="screen">4</div>
-    <div class="screen">5</div>
-    <div class="screen">6</div>
+    <div class="screen" data-hash="first">1</div>
+    <div class="screen" data-hash="second">2</div>
+    <div class="screen" data-hash="third">3</div>
+    <div class="screen" data-hash="fourth">4</div>
+    <div class="screen" data-hash="fifth">5</div>
+    <div class="screen" data-hash="sixth">6</div>
 </div>
 
 </body>
@@ -71,7 +71,7 @@
 
         var roller = $('.roller').screenroller({
             showScrollBar: true,
-            startScreen: 2,
+//            startScreen: 2,
             changeScreen: function(index) {
                 setCurrentItemMenu(index);
             },
@@ -88,70 +88,70 @@
 
         //for touch devices
 
-        var startPositionY,
-                currentPositionY,
-                direction,
-                transitionDuration,
-                action = {
-                    shiftDown: {
-                        directionDown: function(){
-                            roller.currentScreen !== 0 ? roller.moveTo('up') : roller.moveTo(roller.currentScreen);
-                        },
-                        directionUp:   function(){
-                            roller.moveTo(roller.currentScreen);
-                        }
-                    },
-                    shiftUp: {
-                        directionDown: function(){
-                            roller.moveTo(roller.currentScreen);
-                        },
-                        directionUp:   function(){
-                            roller.currentScreen !== roller.countScreens - 1 ? roller.moveTo('down') : roller.moveTo(roller.currentScreen);
-                        }
-                    }
-                };
-
-        var mc = new Hammer.Manager(roller.get(0));
-
-        mc.add(new Hammer.Pan());
-
-        mc.on("panstart", function(e) {
-            currentPositionY = roller.getOffset()[1];
-            startPositionY = e.center.y;
-            $('.roller').css('transitionDuration', '0s');
-        });
-
-        mc.on("panup", function(e) {
-            var newOffset;
-            if(currentPositionY) {
-                (roller.currentScreen === roller.countScreens - 1) ?
-                        newOffset = ((~~e.center.y - ~~startPositionY) / 4 ) + ~~currentPositionY :
-                        newOffset =   ~~e.center.y - ~~startPositionY + ~~currentPositionY;
-
-                roller.updatePosition(newOffset);
-                direction = 'up';
-            }
-        });
-
-        mc.on("pandown", function(e) {
-            var newOffset;
-            if(currentPositionY) {
-                (roller.currentScreen === 0) ?
-                        newOffset = ((~~e.center.y - ~~startPositionY) / 4 ) + ~~currentPositionY :
-                        newOffset =   ~~e.center.y - ~~startPositionY + ~~currentPositionY;
-
-                roller.updatePosition(newOffset);
-                direction = 'down';
-            }
-        });
-
-        mc.on("panend", function(e) {
-            var shiftValue = (~~e.center.y > ~~startPositionY) ? 'shiftDown' : 'shiftUp';
-            var directionValue = (direction === 'down') ? 'directionDown' : 'directionUp';
-
-            action[shiftValue][directionValue]();
-            currentPositionY = null;
-        });
+//        var startPositionY,
+//                currentPositionY,
+//                direction,
+//                transitionDuration,
+//                action = {
+//                    shiftDown: {
+//                        directionDown: function(){
+//                            roller.currentScreen !== 0 ? roller.moveTo('up') : roller.moveTo(roller.currentScreen);
+//                        },
+//                        directionUp:   function(){
+//                            roller.moveTo(roller.currentScreen);
+//                        }
+//                    },
+//                    shiftUp: {
+//                        directionDown: function(){
+//                            roller.moveTo(roller.currentScreen);
+//                        },
+//                        directionUp:   function(){
+//                            roller.currentScreen !== roller.countScreens - 1 ? roller.moveTo('down') : roller.moveTo(roller.currentScreen);
+//                        }
+//                    }
+//                };
+//
+//        var mc = new Hammer.Manager(roller.get(0));
+//
+//        mc.add(new Hammer.Pan());
+//
+//        mc.on("panstart", function(e) {
+//            currentPositionY = roller.getOffset()[1];
+//            startPositionY = e.center.y;
+//            $('.roller').css('transitionDuration', '0s');
+//        });
+//
+//        mc.on("panup", function(e) {
+//            var newOffset;
+//            if(currentPositionY) {
+//                (roller.currentScreen === roller.countScreens - 1) ?
+//                        newOffset = ((~~e.center.y - ~~startPositionY) / 4 ) + ~~currentPositionY :
+//                        newOffset =   ~~e.center.y - ~~startPositionY + ~~currentPositionY;
+//
+//                roller.updatePosition(newOffset);
+//                direction = 'up';
+//            }
+//        });
+//
+//        mc.on("pandown", function(e) {
+//            var newOffset;
+//            if(currentPositionY) {
+//                (roller.currentScreen === 0) ?
+//                        newOffset = ((~~e.center.y - ~~startPositionY) / 4 ) + ~~currentPositionY :
+//                        newOffset =   ~~e.center.y - ~~startPositionY + ~~currentPositionY;
+//
+//                roller.updatePosition(newOffset);
+//                direction = 'down';
+//            }
+//        });
+//
+//        mc.on("panend", function(e) {
+//            var shiftValue = (~~e.center.y > ~~startPositionY) ? 'shiftDown' : 'shiftUp';
+//            var directionValue = (direction === 'down') ? 'directionDown' : 'directionUp';
+//
+//            action[shiftValue][directionValue]();
+//            currentPositionY = null;
+//        });
     }())
 
 </script>

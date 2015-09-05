@@ -35,19 +35,31 @@
     methods.build = {};
 
     methods.init = function() {
+
         this.roller.beforeInit();
         
         this.addClass(this.roller.baseClass);
         this.addClass(this.roller.screenPageClass);
 
-        this.roller.currentScreen = methods.getFirstScreen.call(this);
         this.moveTo = methods.moveTo;
+        
+        methods.initModules.call(this);
+        methods.bindEvents.call(this);
+        
+        this.roller.currentScreen = this.roller.currentScreen || methods.getFirstScreen.call(this);
 
+        
         this.moveTo(this.roller.currentScreen, 0);
 
-        methods.initModules.call(this);
-
         this.roller.afterInit();
+    };
+    
+    methods.bindEvents = function() {
+        var c = this;
+        
+        c.on('changeCurrentScreen', function(e, data) {
+            c.roller.afterMove(data.index);
+        });  
     };
 
     methods.initModules = function() {
@@ -124,7 +136,7 @@
 
         this.off('transitionend webkitTransitionEnd');
         this.one('transitionend webkitTransitionEnd', function() {
-            $self.roller.afterMove(index);
+            $self.trigger('changeCurrentScreen', {index: index});
         });
     };
 
@@ -149,7 +161,7 @@
         this.roller.beforeMove(index);
         this.stop(false, true);
         this.animate({top: index * -100 + '%'}, speed, function() {
-            $self.roller.afterMove(index);
+            $self.trigger('changeCurrentScreen', {index: index});
         });
     };
 
@@ -230,7 +242,7 @@
         methods.removeScrollListener.call(this);
         $('html, body').animate({scrollTop: scrollTop}, speed, function() {
             methods.addScrollListener.call($self);
-            $self.roller.afterMove(index);
+            $self.trigger('changeCurrentScreen', {index: index});
         });
     };
 
@@ -251,6 +263,7 @@
         if (nearestToCentre !== this.roller.currentScreen) {
             this.roller.currentScreen = nearestToCentre;
             this.roller.changeScreen(nearestToCentre);
+            this.trigger('changeCurrentScreen', {index: nearestToCentre});
         }
     };
 
@@ -285,5 +298,84 @@
             return methods.moveScrollTop;
         }
     }
+}(jQuery));
+
+
+(function($){
+    //support hash
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.hash = true;
+
+    methods.hashInit = function() {
+        this.roller.screensHash = methods.getScreensHash.call(this);
+
+        var matchIndex = methods.checkMatchHash.call(this);
+
+        if(matchIndex !== -1) {
+            this.roller.currentScreen = matchIndex;
+        }
+        
+        methods.bindEventsHash.call(this);
+    };
+    
+    methods.bindEventsHash = function() {
+        var c = this;
+        methods.onEventChangeHash.call(c);
+
+        c.on('changeCurrentScreen', function(e, data) {
+            methods.offEventChangeHash.call(c);
+            methods.changeHashByIndex.call(c, data.index);
+            setTimeout(function() {
+                methods.onEventChangeHash.call(c);
+            }, 0)
+        });
+    };
+
+    methods.onEventChangeHash = function() {
+        var c = this;
+        $(window).on('hashchange.screenroller', function() {
+            var matchHashIndex = methods.checkMatchHash.call(c);
+            if(matchHashIndex !== -1) {
+                c.moveTo(matchHashIndex);
+            }
+        });
+    };
+
+    methods.checkMatchHash = function() {
+        var hashPageInInit = methods.getCurrentHash();
+
+        return this.roller.screensHash.indexOf(hashPageInInit);
+    };
+
+    methods.offEventChangeHash = function() {
+
+        $(window).off('hashchange.screenroller');
+    };
+
+    methods.changeHashByIndex = function(index) {
+        var hash = methods.getHashById.call(this, index);
+
+        hash && methods.changeHash(hash);
+    };
+
+    methods.getHashById = function(index) {
+        return this.roller.screensHash[index];
+    };
+
+    methods.changeHash = function(hash) {
+        window.location.hash = hash;
+    };
+
+    methods.getCurrentHash = function() {
+        return window.location.hash.replace('#', '');
+    };
+
+    methods.getScreensHash = function() {
+        return $.map(this.roller.$screens, function(screen){
+            return $(screen).attr('data-hash');
+        });
+    };
+
 }(jQuery));
 
