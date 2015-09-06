@@ -1,11 +1,5 @@
-.solid-page.roller
-{
-    position: relative;
-    transform: none;
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
-}
-.screen-page.roller
+/* base animate - begin */
+.roller
 {
     position: fixed;
     top: 0;
@@ -15,7 +9,23 @@
     -webkit-transition: transform 0.5s linear;
     transition: transform 0.5s linear;
 }
-.screen-page .screen
+.screen
 {
     height: 100%;
 }
+/* base animate - end */
+
+/* solid mod - begin */
+.solid-page.roller
+{
+    position: relative;
+    transform: none;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+}
+
+.solid-page .screen
+{
+    height: auto;
+}
+/* solid mod - end */

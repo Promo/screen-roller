@@ -37,9 +37,6 @@
     methods.init = function() {
 
         this.roller.beforeInit();
-        
-        this.addClass(this.roller.baseClass);
-        this.addClass(this.roller.screenPageClass);
 
         this.moveTo = methods.moveTo;
         
@@ -210,7 +207,6 @@
 
     methods.setMod['screen'] = function() {
         this.removeClass(this.roller.solidPageClass);
-        this.addClass(this.roller.screenPageClass);
 
         this.moveTo(this.roller.currentScreen, 0);
 
@@ -220,7 +216,6 @@
     };
 
     methods.setMod['solid'] = function() {
-        this.removeClass(this.roller.screenPageClass);
         this.addClass(this.roller.solidPageClass);
 
         this.attr('style', '');
