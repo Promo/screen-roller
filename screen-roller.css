@@ -1,19 +1,57 @@
 /* base animate - begin */
+
+/*.roller*/
+/*{*/
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*-webkit-transition: transform 0.5s linear;*/
+    /*transition: transform 0.5s linear;*/
+/*}*/
+/*.screen*/
+/*{*/
+    /*height: 100%;*/
+/*}*/
+
+/* base animate - end */
+
+/* influx animate - begin */
+html
+{
+    height: 100%;
+}
+body
+{
+    height: 100%;
+    /*min-height: 100%;*/
+}
 .roller
 {
-    position: fixed;
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+.roller .screen
+{
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    -webkit-transition: transform 0.5s linear;
-    transition: transform 0.5s linear;
+    min-height: 100%;
+    -weblit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
 }
-.screen
+
+.roller .screen.current
 {
-    height: 100%;
+    z-index: 10;
 }
-/* base animate - end */
+
+/* influx animate - end */
 
 /* solid mod - begin */
 .solid-page.roller

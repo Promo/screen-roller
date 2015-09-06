@@ -7,7 +7,7 @@ body, html {
     height: 300px;
     margin: 20px;
 }
-.solid-page .screen:nth-child(1)
+.solid-page .screen[data-hash="first"]
 {
     height: 500px;
 }
@@ -31,30 +31,31 @@ body, html {
 {
     height: 500px;
 }
-.screen:nth-child(1)
+.screen[data-hash="first"]
 {
-    background: rgba(0, 255, 0, 0.3);
+    background: #c9f7b5;
 }
-.screen:nth-child(2)
+.screen[data-hash="second"]
 {
-    background: rgba(0, 0, 255, 0.3);
+    background: #afbafb;
 }
-.screen:nth-child(3)
+.screen[data-hash="third"]
 {
-    background: rgba(255, 0, 0, 0.3);
+    background: #f1b6b6;
 }
-.screen:nth-child(4)
+.screen[data-hash="fourth"]
 {
-    background: rgba(255, 255, 0, 0.3);
+    background: #fffab8;
 }
-.screen:nth-child(5)
+.screen[data-hash="fifth"]
 {
-    background: rgba(0, 255, 255, 0.3);
+    background: #c5fbfc;
 }
-.screen:nth-child(6)
+.screen[data-hash="sixth"]
 {
-    background: rgba(255, 0, 255, 0.3);
+    background: #efbefd;
 }
+
 .menu
 {
     list-style: none;
