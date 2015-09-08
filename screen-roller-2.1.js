@@ -4,7 +4,7 @@
             data3d = methods.get3dData();
 
         options = $.extend({
-            animationSpeed: 500,
+            speedanimation: 500,
             'baseClass': 'roller',
             'screenClass': 'screen',
             'screenPageClass': 'screen-page',
@@ -12,6 +12,9 @@
             'minHeight' : 500,
             'minWidth': 700,
             'startScreen': null,
+            //influx animation
+            'directionAnimation': 'from-right',
+            'reverseAnimation': true,
             'beforeInit': function(){},
             'afterInit': function(){},
             'afterMove': function(){},
@@ -79,12 +82,12 @@
 
 
         if(nextScreen >= 0) {
-            speed = (speed >= 0) ? speed : this.roller.animationSpeed;
+            speed = (speed >= 0) ? speed : this.roller.speedanimation;
 
-            this.roller.currentScreen = nextScreen;
             animateFunction = methods.selectAnimate.call(this);
             animateFunction.call(this, nextScreen, speed);
 
+            this.roller.currentScreen = nextScreen;
         }
     };
 
@@ -180,19 +183,50 @@
 }(jQuery));
 
 (function($){
-    //support influx animate
+    //support influx animation
     var methods = $.fn.screenroller.prototype;
 
     methods.build.influxAnimate = true;
 
     methods.influxAnimateInit = function() {
-        this.roller.$cloneScreens = []
+        this.roller.initialPosition = {
+            'from-bottom': 'translate3d(0, 100%, 0)',
+            'from-right':  'translate3d(100%, 0, 0)',
+            'from-left':   'translate3d(-100%, 0, 0)',
+            'from-top':    'translate3d(0, -100%, 0)'
+        };
+
+        this.roller.reverseDirettion = {
+            'from-bottom': 'from-top',
+            'from-right':  'from-left',
+            'from-left':   'from-right',
+            'from-top':    'from-bottom'
+        };
+
+        this.roller.$cloneScreens = [];
+
+        methods.setInitialPosition.call(this, this.roller.directionAnimation);
+    };
+
+    methods.setInitialPosition = function(direction) {
+        this.roller.$screens.css(this.roller.transformPrefix, this.roller.initialPosition[direction]);
+    };
+
+    methods.setDirection = function(index) {
+        var directionAnimation = this.roller.directionAnimation,
+            reverseDirettion   = this.roller.reverseDirettion;
+
+        if(index > this.roller.currentScreen) {
+            methods.setInitialPosition.call(this, directionAnimation);
+        } else {
+            methods.setInitialPosition.call(this, reverseDirettion[directionAnimation]);
+        }
     };
 
     methods.move3d = function(index, speed) {
-            
+        this.roller.reverseAnimation && methods.setDirection.call(this, index);
+
         var c = this,
-            indexCurrentScreen = c.roller.currentScreen,
             $animateScreen = c.roller.$screens.eq(index).clone(),
             transformPrefix = c.roller.transformPrefix;
 

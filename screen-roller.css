@@ -32,7 +32,7 @@ body
     position: relative;
     width: 100%;
     min-height: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .roller .screen
@@ -42,8 +42,8 @@ body
     left: 0;
     width: 100%;
     min-height: 100%;
-    -weblit-transform: translate3d(100%, 0, 0);
-    transform: translate3d(100%, 0, 0);
+    /*-weblit-transform: translate3d(100%, 0, 0);*/
+    /*transform: translate3d(100%, 0, 0);*/
 }
 
 .roller .screen.current
