@@ -23,7 +23,7 @@
 
         roller.$screens = this.find('.' + options.screenClass);
         roller.countScreens = roller.$screens.size();
-        roller.support3d = data3d.transform3d;
+        roller.support3d = !!data3d.transform3d;
         roller.transformPrefix = data3d.transformPrefix;
 
         this.roller = $.extend(roller, options);
@@ -159,10 +159,10 @@
 }(jQuery));
 
 (function($){
-    //support old browsers
+    //support old browsers for base animate
     var methods = $.fn.screenroller.prototype;
 
-    methods.build.oldBrowsers = true;
+    methods.build.baseAnimateOldBrowsers = true;
 
     methods.moveTop = function(index, speed) {
         var $self = this;
@@ -189,23 +189,29 @@
     methods.build.influxAnimate = true;
 
     methods.influxAnimateInit = function() {
-        this.roller.initialPosition = {
+        this.roller.initialPosition  = methods.getInitialPosition();
+        this.roller.reverseDirettion = methods.getReverseDirettion();
+        this.roller.$cloneScreens = [];
+
+        methods.setInitialPosition.call(this, this.roller.directionAnimation);
+    };
+
+    methods.getInitialPosition = function() {
+        return {
             'from-bottom': 'translate3d(0, 100%, 0)',
             'from-right':  'translate3d(100%, 0, 0)',
             'from-left':   'translate3d(-100%, 0, 0)',
             'from-top':    'translate3d(0, -100%, 0)'
-        };
+        }
+    };
 
-        this.roller.reverseDirettion = {
+    methods.getReverseDirettion = function() {
+        return {
             'from-bottom': 'from-top',
             'from-right':  'from-left',
             'from-left':   'from-right',
             'from-top':    'from-bottom'
-        };
-
-        this.roller.$cloneScreens = [];
-
-        methods.setInitialPosition.call(this, this.roller.directionAnimation);
+        }
     };
 
     methods.setInitialPosition = function(direction) {
@@ -235,11 +241,14 @@
 
         this.roller.$cloneScreens.push($animateScreen);
 
+
         $animateScreen.css('transition-duration', speed / 1000 + 's');
         setTimeout(function() {
             $animateScreen.css(transformPrefix, 'translate3d(0, 0, 0)');
         }, 100);
 
+        //при transition-duration = 0 событие transitionend не срабатывает, поэтому не удаляется
+        //первый клонированный слайд
         $animateScreen.one('transitionend webkitTransitionEnd', function() {
             c.roller.$cloneScreens[0].hide();
             // в webkit дергает экран при удалении нод
@@ -251,6 +260,67 @@
 
             c.trigger('changeCurrentScreen', {index: index});
         });
+    };
+}(jQuery));
+
+(function($){
+    //support old browsers for influx animation
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.influxAnimateOldBrowsers = true;
+
+    methods.getInitialPosition = function() {
+        return {
+            'support3d': {
+                'from-bottom': 'translate3d(0, 100%, 0)',
+                'from-right':  'translate3d(100%, 0, 0)',
+                'from-left':   'translate3d(-100%, 0, 0)',
+                'from-top':    'translate3d(0, -100%, 0)'
+            },
+            'notSupport3d': {
+                'from-bottom': { top: '100%', left: 0 },
+                'from-right':  { top: 0, left: '100%' },
+                'from-left':   { top: 0, left: '-100%' },
+                'from-top':    { top: '-100%', left: 0 }
+            }
+        }
+    };
+
+    methods.setInitialPosition = function(direction) {
+        if(this.roller.support3d) {
+            this.roller.$screens.css(this.roller.transformPrefix, this.roller.initialPosition['support3d'][direction]);
+        } else {
+            this.roller.$screens.css(this.roller.initialPosition['notSupport3d'][direction]);
+        }
+    };
+
+    methods.selectPropertyAnimate = function() {
+
+        if(this.roller.support3d) {
+            return methods.move3d;
+        } else {
+            return methods.moveSide;
+        }
+    };
+
+    methods.moveSide = function(index, speed) {
+        this.roller.reverseAnimation && methods.setDirection.call(this, index);
+
+        var c = this,
+            $animateScreen = c.roller.$screens.eq(index).clone();
+
+        $animateScreen.addClass('clone');
+
+        c.append($animateScreen);
+        c.roller.$cloneScreens.push($animateScreen);
+
+        $animateScreen.animate({ top: 0, left: 0 }, speed, function() {
+            if(c.roller.$cloneScreens.length > 1) {
+                c.roller.$cloneScreens[0].remove();
+                c.roller.$cloneScreens.shift();
+            }
+            c.trigger('changeCurrentScreen', {index: index});
+        })
     };
 }(jQuery));
 
