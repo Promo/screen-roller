@@ -314,13 +314,23 @@
         c.append($animateScreen);
         c.roller.$cloneScreens.push($animateScreen);
 
-        $animateScreen.animate({ top: 0, left: 0 }, speed, function() {
-            if(c.roller.$cloneScreens.length > 1) {
-                c.roller.$cloneScreens[0].remove();
-                c.roller.$cloneScreens.shift();
-            }
+        if(speed !== 0) {
+            //при transition-duration = 0 событие transitionend не срабатывает, поэтому не удаляется
+            //первый клонированный слайд
+            $animateScreen.one('transitionend webkitTransitionEnd', function() {
+                c.roller.$cloneScreens[0].hide();
+                // в webkit дергает экран при удалении нод
+                // используем timeout для фикса этого бага
+                setTimeout(function() {
+                    c.roller.$cloneScreens[0].remove();
+                    c.roller.$cloneScreens.shift();
+                }, 1000);
+
+                c.trigger('changeCurrentScreen', {index: index});
+            });
+        } else {
             c.trigger('changeCurrentScreen', {index: index});
-        })
+        }
     };
 }(jQuery));
 
