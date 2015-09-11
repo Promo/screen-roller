@@ -222,7 +222,7 @@
         var directionAnimation = this.roller.directionAnimation,
             reverseDirettion   = this.roller.reverseDirettion;
 
-        if(index > this.roller.currentScreen) {
+        if(index >= this.roller.currentScreen) {
             methods.setInitialPosition.call(this, directionAnimation);
         } else {
             methods.setInitialPosition.call(this, reverseDirettion[directionAnimation]);
