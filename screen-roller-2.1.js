@@ -14,7 +14,7 @@
             'startScreen': null,
             //influx animation
             'directionAnimation': 'from-right',
-            'reverseAnimation': true,
+            'reverseAnimation': false,
             'beforeInit': function(){},
             'afterInit': function(){},
             'afterMove': function(){},
