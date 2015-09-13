@@ -42,12 +42,10 @@
         this.roller.beforeInit();
 
         this.moveTo = methods.moveTo;
-        
+
+        this.roller.currentScreen = this.roller.currentScreen || methods.getFirstScreen.call(this);
         methods.initModules.call(this);
         methods.bindEvents.call(this);
-        
-        this.roller.currentScreen = this.roller.currentScreen || methods.getFirstScreen.call(this);
-
         
         this.moveTo(this.roller.currentScreen, 0);
 
@@ -59,7 +57,15 @@
         
         c.on('changeCurrentScreen', function(e, data) {
             c.roller.afterMove(data.index);
-        });  
+        });
+
+        c.on('turnOnSolidMod', function() {
+            c.roller.onSolidMod();
+        });
+
+        c.on('turnOnScreenMod', function() {
+            c.roller.onScreenMod();
+        });
     };
 
     methods.initModules = function() {
@@ -138,49 +144,70 @@
 
 }(jQuery));
 
-(function($){
-    //support base animate
-    var methods = $.fn.screenroller.prototype;
 
-    methods.build.baseAnimate = true;
+/*==== base animate ====*/
 
-    methods.move3d = function(index, speed) {
-        var $self = this;
-        this.roller.beforeMove(index);
+//(function($){
+//    //support base animate
+//    var methods = $.fn.screenroller.prototype;
+//
+//    methods.build.baseAnimate = true;
+//
+//    methods.baseAnimateInit = function() {
+//        var c = this;
+//
+//        c.addClass('base-animation');
+//        c.roller.animation = 'base-animation';
+//
+//        c.on('turnOnSolidMod', function() {
+//            c.attr('style', '');
+//        });
+//    };
+//
+//    methods.move3d = function(index, speed) {
+//        var с = this;
+//        с.roller.beforeMove(index);
+//
+//        с.css('transition-duration', speed / 1000 + 's');
+//        с.css(с.roller.transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
+//
+//        с.off('transitionend webkitTransitionEnd');
+//        с.one('transitionend webkitTransitionEnd', function() {
+//            с.trigger('changeCurrentScreen', {index: index});
+//        });
+//    };
+//}(jQuery));
+//
+//(function($){
+//    //support old browsers for base animate
+//    var methods = $.fn.screenroller.prototype;
+//
+//    methods.build.baseAnimateOldBrowsers = true;
+//
+//    methods.moveTop = function(index, speed) {
+//        var $self = this;
+//        this.roller.beforeMove(index);
+//        this.stop(false, true);
+//        this.animate({top: index * -100 + '%'}, speed, function() {
+//            $self.trigger('changeCurrentScreen', {index: index});
+//        });
+//    };
+//
+//    methods.selectPropertyAnimate = function() {
+//        if(this.roller.support3d) {
+//            return methods.move3d;
+//        } else {
+//            return methods.moveTop;
+//        }
+//    };
+//}(jQuery));
 
-        this.css('transition-duration', speed / 1000 + 's');
-        this.css(this.roller.transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
 
-        this.off('transitionend webkitTransitionEnd');
-        this.one('transitionend webkitTransitionEnd', function() {
-            $self.trigger('changeCurrentScreen', {index: index});
-        });
-    };
-}(jQuery));
 
-(function($){
-    //support old browsers for base animate
-    var methods = $.fn.screenroller.prototype;
 
-    methods.build.baseAnimateOldBrowsers = true;
 
-    methods.moveTop = function(index, speed) {
-        var $self = this;
-        this.roller.beforeMove(index);
-        this.stop(false, true);
-        this.animate({top: index * -100 + '%'}, speed, function() {
-            $self.trigger('changeCurrentScreen', {index: index});
-        });
-    };
 
-    methods.selectPropertyAnimate = function() {
-        if(this.roller.support3d) {
-            return methods.move3d;
-        } else {
-            return methods.moveTop;
-        }
-    };
-}(jQuery));
+/*==== influx animate ====*/
 
 (function($){
     //support influx animation
@@ -189,11 +216,24 @@
     methods.build.influxAnimate = true;
 
     methods.influxAnimateInit = function() {
+        this.addClass('influx-animation');
+        this.roller.animation = 'influx-animation';
         this.roller.initialPosition  = methods.getInitialPosition();
         this.roller.reverseDirettion = methods.getReverseDirettion();
         this.roller.$cloneScreens = [];
 
         methods.setInitialPosition.call(this, this.roller.directionAnimation);
+
+        var c = this;
+        this.on('turnOnSolidMod', function() {
+            c.roller.$screens.attr('style', '');
+
+            methods.removeСlones.call(c, 0);
+        });
+
+        this.on('turnOnScreenMod', function() {
+            methods.setInitialPosition.call(c, c.roller.directionAnimation);
+        });
     };
 
     methods.getInitialPosition = function() {
@@ -260,6 +300,10 @@
 
             c.trigger('changeCurrentScreen', {index: index});
         });
+    };
+
+    methods.removeСlones = function(retain) {
+
     };
 }(jQuery));
 
@@ -334,129 +378,132 @@
     };
 }(jQuery));
 
+
+
+
+
+/*==== solid mod ====*/
 //support solid mod
-//(function($){
-//    var methods = $.fn.screenroller.prototype;
-//
-//    methods.build.solidMod = true;
-//
-//    methods.solidModInit = function() {
-//        methods.determineMod.call(this);
-//        methods.bindChangeMod.call(this);
-//    };
-//
-//    methods.determineMod = function() {
-//        var $win = $(window),
-//            mod;
-//
-//        mod = (($win.height() > this.roller.minHeight) &&
-//               ($win.width()  > this.roller.minWidth)) ?  'screen' : 'solid';
-//
-//        if(mod !== this.roller.mod) {
-//            this.roller.mod = mod;
-//            methods.setMod[mod].call(this);
-//        }
-//    };
-//
-//    methods.bindChangeMod = function() {
-//        var $self = this;
-//
-//        $(window).on('resize.roller', function() {
-//            methods.determineMod.call($self);
-//        });
-//    };
-//
-//    methods.setMod = {};
-//
-//    methods.setMod['screen'] = function() {
-//        this.removeClass(this.roller.solidPageClass);
-//
-//        this.moveTo(this.roller.currentScreen, 0);
-//
-//        methods.removeScrollListener();
-//
-//        this.roller.onScreenMod();
-//    };
-//
-//    methods.setMod['solid'] = function() {
-//        this.addClass(this.roller.solidPageClass);
-//
-//        this.attr('style', '');
-//
-//        this.moveTo(this.roller.currentScreen, 0);
-//
-//        methods.spotOffsetsScreens.call(this);
-//        methods.addScrollListener.call(this);
-//
-//        this.roller.onSolidMod();
-//    };
-//
-//    methods.moveScrollTop = function(index, speed) {
-//        var $self = this,
-//            scrollTop = this.roller.$screens.eq(this.roller.currentScreen).offset().top;
-//
-//        this.roller.beforeMove(index);
-//        $('html, body').stop(false, false);
-//        methods.removeScrollListener.call(this);
-//        $('html, body').animate({scrollTop: scrollTop}, speed, function() {
-//            methods.addScrollListener.call($self);
-//            $self.trigger('changeCurrentScreen', {index: index});
-//        });
-//    };
-//
-//    methods.addScrollListener = function() {
-//        var $self = this;
-//        $(window).on('scroll.screenroller', function() {
-//            methods.checkNearScreen.call($self)
-//        });
-//    };
-//
-//    methods.removeScrollListener = function() {
-//        $(window).off('scroll.screenroller');
-//    };
-//
-//    methods.checkNearScreen = function() {
-//        var nearestToCentre = methods.spotNearScreen.call(this);
-//
-//        if (nearestToCentre !== this.roller.currentScreen) {
-//            this.roller.currentScreen = nearestToCentre;
-//            this.roller.changeScreen(nearestToCentre);
-//            this.trigger('changeCurrentScreen', {index: nearestToCentre});
-//        }
-//    };
-//
-//    methods.spotNearScreen = function() {
-//
-//        var windowScrollTop = $(window).scrollTop(),
-//            nearValue = Infinity,
-//            nearest;
-//
-//        $.each(this.roller.offsetScreens, function(index, val) {
-//            if(Math.abs(windowScrollTop - val) < nearValue) {
-//                nearValue = windowScrollTop - val;
-//                nearest = index;
-//            }
-//        });
-//        return nearest;
-//    };
-//
-//    methods.spotOffsetsScreens = function() {
-//        var $self = this;
-//
-//        this.roller.offsetScreens = [];
-//        this.roller.$screens.each(function() {
-//            $self.roller.offsetScreens.push($(this).offset().top);
-//        });
-//    };
-//
-//    methods.selectAnimate = function(index, speed) {
-//        if(this.roller.mod === 'screen') {
-//            return methods.selectPropertyAnimate.call(this, index, speed);
-//        } else {
-//            return methods.moveScrollTop;
-//        }
-//    }
-//}(jQuery));
+(function($){
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.solidMod = true;
+
+    methods.solidModInit = function() {
+        methods.determineMod.call(this);
+        methods.bindChangeMod.call(this);
+    };
+
+    methods.determineMod = function() {
+        var $win = $(window),
+            mod;
+
+        mod = (($win.height() > this.roller.minHeight) &&
+               ($win.width()  > this.roller.minWidth)) ?  'screen' : 'solid';
+
+        if(mod !== this.roller.mod) {
+            this.roller.mod = mod;
+            methods.setMod[mod].call(this);
+        }
+    };
+
+    methods.bindChangeMod = function() {
+        var $self = this;
+
+        $(window).on('resize.roller', function() {
+            methods.determineMod.call($self);
+        });
+    };
+
+    methods.setMod = {};
+
+    methods.setMod['screen'] = function() {
+        this.trigger('turnOnScreenMod');
+        this.addClass(this.roller.animation);
+        this.removeClass(this.roller.solidPageClass);
+
+        this.moveTo(this.roller.currentScreen, 0);
+
+        methods.removeScrollListener();
+    };
+
+    methods.setMod['solid'] = function() {
+        this.trigger('turnOnSolidMod');
+        this.addClass(this.roller.solidPageClass);
+        this.removeClass(this.roller.animation);
+
+        methods.spotOffsetsScreens.call(this);
+        methods.addScrollListener.call(this);
+
+        this.moveTo(this.roller.currentScreen, 0);
+    };
+
+    methods.moveScrollTop = function(index, speed) {
+        var $self = this,
+            scrollTop = this.roller.$screens.eq(index).offset().top;
+
+        this.roller.beforeMove(index);
+        $('html, body').stop(false, false);
+        methods.removeScrollListener.call(this);
+        $('html, body').animate({scrollTop: scrollTop}, speed, function() {
+            methods.addScrollListener.call($self);
+            $self.trigger('changeCurrentScreen', {index: index});
+        });
+    };
+
+    methods.addScrollListener = function() {
+        var $self = this;
+        $(window).on('scroll.screenroller', function() {
+            methods.checkNearScreen.call($self)
+        });
+    };
+
+    methods.removeScrollListener = function() {
+        $(window).off('scroll.screenroller');
+    };
+
+    methods.checkNearScreen = function() {
+        var nearestToCentre = methods.spotNearScreen.call(this);
+
+        if (nearestToCentre !== this.roller.currentScreen) {
+            this.roller.currentScreen = nearestToCentre;
+            this.roller.changeScreen(nearestToCentre);
+            this.trigger('changeCurrentScreen', {index: nearestToCentre});
+        }
+    };
+
+    methods.spotNearScreen = function() {
+
+        var windowScrollTop = $(window).scrollTop(),
+            nearValue = Infinity,
+            nearest;
+
+        $.each(this.roller.offsetScreens, function(index, val) {
+            if(Math.abs(windowScrollTop - val) < nearValue) {
+                nearValue = windowScrollTop - val;
+                nearest = index;
+            }
+        });
+        return nearest;
+    };
+
+    methods.spotOffsetsScreens = function() {
+        var $self = this;
+
+        this.roller.offsetScreens = [];
+        this.roller.$screens.each(function() {
+            $self.roller.offsetScreens.push($(this).offset().top);
+        });
+    };
+
+    methods.selectAnimate = function(index, speed) {
+        if(this.roller.mod === 'screen') {
+            return methods.selectPropertyAnimate.call(this, index, speed);
+        } else {
+            return methods.moveScrollTop;
+        }
+    }
+}(jQuery));
 
 
 (function($){
@@ -510,7 +557,6 @@
     };
 
     methods.offEventChangeHash = function() {
-
         $(window).off('hashchange.screenroller');
     };
 

@@ -4,7 +4,6 @@ body, html {
 }
 .solid-page .screen
 {
-    height: 300px;
     margin: 20px;
 }
 .solid-page .screen[data-hash="first"]

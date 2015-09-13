@@ -1,23 +1,3 @@
-/* base animate - begin */
-
-/*.roller*/
-/*{*/
-    /*position: fixed;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*-webkit-transition: transform 0.5s linear;*/
-    /*transition: transform 0.5s linear;*/
-/*}*/
-/*.screen*/
-/*{*/
-    /*height: 100%;*/
-/*}*/
-
-/* base animate - end */
-
-/* influx animate - begin */
 html
 {
     height: 100%;
@@ -25,9 +5,32 @@ html
 body
 {
     height: 100%;
-    /*min-height: 100%;*/
+    min-height: 100%;
 }
-.roller
+
+
+/* base animate - begin */
+.base-animation
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: transform 0.5s linear;
+    transition: transform 0.5s linear;
+}
+.base-animation .screen
+{
+    height: 100%;
+}
+/* base animate - end */
+
+
+
+
+/* influx animate - begin */
+.influx-animation
 {
     position: relative;
     width: 100%;
@@ -35,26 +38,26 @@ body
     overflow: hidden;
 }
 
-.roller .screen
+.influx-animation .screen
 {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     min-height: 100%;
-    /*-weblit-transform: translate3d(100%, 0, 0);*/
-    /*transform: translate3d(100%, 0, 0);*/
 }
 
-.roller .screen.current
+.influx-animation .screen.current
 {
     z-index: 10;
 }
-
 /* influx animate - end */
 
+
+
+
 /* solid mod - begin */
-.solid-page.roller
+.solid-page
 {
     position: relative;
     transform: none;
