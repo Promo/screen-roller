@@ -23,6 +23,7 @@
 
         roller.$screens = this.find('.' + options.screenClass);
         roller.countScreens = roller.$screens.size();
+
         roller.support3d = !!data3d.transform3d;
         roller.transformPrefix = data3d.transformPrefix;
 
@@ -147,60 +148,60 @@
 
 /*==== base animate ====*/
 
-//(function($){
-//    //support base animate
-//    var methods = $.fn.screenroller.prototype;
-//
-//    methods.build.baseAnimate = true;
-//
-//    methods.baseAnimateInit = function() {
-//        var c = this;
-//
-//        c.addClass('base-animation');
-//        c.roller.animation = 'base-animation';
-//
-//        c.on('turnOnSolidMod', function() {
-//            c.attr('style', '');
-//        });
-//    };
-//
-//    methods.move3d = function(index, speed) {
-//        var с = this;
-//        с.roller.beforeMove(index);
-//
-//        с.css('transition-duration', speed / 1000 + 's');
-//        с.css(с.roller.transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
-//
-//        с.off('transitionend webkitTransitionEnd');
-//        с.one('transitionend webkitTransitionEnd', function() {
-//            с.trigger('changeCurrentScreen', {index: index});
-//        });
-//    };
-//}(jQuery));
-//
-//(function($){
-//    //support old browsers for base animate
-//    var methods = $.fn.screenroller.prototype;
-//
-//    methods.build.baseAnimateOldBrowsers = true;
-//
-//    methods.moveTop = function(index, speed) {
-//        var $self = this;
-//        this.roller.beforeMove(index);
-//        this.stop(false, true);
-//        this.animate({top: index * -100 + '%'}, speed, function() {
-//            $self.trigger('changeCurrentScreen', {index: index});
-//        });
-//    };
-//
-//    methods.selectPropertyAnimate = function() {
-//        if(this.roller.support3d) {
-//            return methods.move3d;
-//        } else {
-//            return methods.moveTop;
-//        }
-//    };
-//}(jQuery));
+(function($){
+    //support base animate
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.baseAnimate = true;
+
+    methods.baseAnimateInit = function() {
+        var c = this;
+
+        c.addClass('base-animation');
+        c.roller.animation = 'base-animation';
+
+        c.on('turnOnSolidMod', function() {
+            c.attr('style', '');
+        });
+    };
+
+    methods.move3d = function(index, speed) {
+        var с = this;
+        с.roller.beforeMove(index);
+
+        с.css('transition-duration', speed / 1000 + 's');
+        с.css(с.roller.transformPrefix, 'translate3d(0, ' + index * -100 +'%, 0)');
+
+        с.off('transitionend webkitTransitionEnd');
+        с.one('transitionend webkitTransitionEnd', function() {
+            с.trigger('changeCurrentScreen', {index: index});
+        });
+    };
+}(jQuery));
+
+(function($){
+    //support old browsers for base animate
+    var methods = $.fn.screenroller.prototype;
+
+    methods.build.baseAnimateOldBrowsers = true;
+
+    methods.moveTop = function(index, speed) {
+        var $self = this;
+        this.roller.beforeMove(index);
+        this.stop(false, true);
+        this.animate({top: index * -100 + '%'}, speed, function() {
+            $self.trigger('changeCurrentScreen', {index: index});
+        });
+    };
+
+    methods.selectPropertyAnimate = function() {
+        if(this.roller.support3d) {
+            return methods.move3d;
+        } else {
+            return methods.moveTop;
+        }
+    };
+}(jQuery));
 
 
 
@@ -216,22 +217,23 @@
     methods.build.influxAnimate = true;
 
     methods.influxAnimateInit = function() {
-        this.addClass('influx-animation');
-        this.roller.animation = 'influx-animation';
-        this.roller.initialPosition  = methods.getInitialPosition();
-        this.roller.reverseDirettion = methods.getReverseDirettion();
-        this.roller.$cloneScreens = [];
-
-        methods.setInitialPosition.call(this, this.roller.directionAnimation);
-
         var c = this;
-        this.on('turnOnSolidMod', function() {
+
+        c.addClass('influx-animation');
+        c.roller.animation = 'influx-animation';
+        c.roller.initialPosition  = methods.getInitialPosition();
+        c.roller.reverseDirettion = methods.getReverseDirettion();
+        c.roller.$cloneScreens = [];
+
+        methods.setInitialPosition.call(c, c.roller.directionAnimation);
+
+        c.on('turnOnSolidMod', function() {
             c.roller.$screens.attr('style', '');
 
             methods.removeСlones.call(c, 0);
         });
 
-        this.on('turnOnScreenMod', function() {
+        c.on('turnOnScreenMod', function() {
             methods.setInitialPosition.call(c, c.roller.directionAnimation);
         });
     };
@@ -255,7 +257,8 @@
     };
 
     methods.setInitialPosition = function(direction) {
-        this.roller.$screens.css(this.roller.transformPrefix, this.roller.initialPosition[direction]);
+        var r = this.roller;
+        r.$screens.css(r.transformPrefix, r.initialPosition[direction]);
     };
 
     methods.setDirection = function(index) {
@@ -270,6 +273,7 @@
     };
 
     methods.move3d = function(index, speed) {
+
         this.roller.reverseAnimation && methods.setDirection.call(this, index);
 
         var c = this,
@@ -277,13 +281,14 @@
             transformPrefix = c.roller.transformPrefix;
 
         $animateScreen.addClass('clone');
-        this.append($animateScreen);
-
-        this.roller.$cloneScreens.push($animateScreen);
+        c.append($animateScreen);
+        c.roller.$cloneScreens.push($animateScreen);
+        c.roller.beforeMove(index);
 
 
         $animateScreen.css('transition-duration', speed / 1000 + 's');
         setTimeout(function() {
+
             $animateScreen.css(transformPrefix, 'translate3d(0, 0, 0)');
         }, 100);
 
@@ -294,7 +299,7 @@
             // в webkit дергает экран при удалении нод
             // используем timeout для фикса этого бага
             setTimeout(function() {
-                c.roller.$cloneScreens[0].remove();
+                c.roller.$cloneScreens[0] && c.roller.$cloneScreens[0].remove();
                 c.roller.$cloneScreens.shift();
             }, 1000);
 
@@ -303,7 +308,10 @@
     };
 
     methods.removeСlones = function(retain) {
-
+        $.each(this.roller.$cloneScreens, function(index, clone) {
+            clone.remove();
+        });
+        this.roller.$cloneScreens = [];
     };
 }(jQuery));
 
@@ -331,10 +339,12 @@
     };
 
     methods.setInitialPosition = function(direction) {
-        if(this.roller.support3d) {
-            this.roller.$screens.css(this.roller.transformPrefix, this.roller.initialPosition['support3d'][direction]);
+        var r = this.roller;
+
+        if(r.support3d) {
+            r.$screens.css(r.transformPrefix, r.initialPosition['support3d'][direction]);
         } else {
-            this.roller.$screens.css(this.roller.initialPosition['notSupport3d'][direction]);
+            r.$screens.css(r.initialPosition['notSupport3d'][direction]);
         }
     };
 
@@ -357,24 +367,19 @@
 
         c.append($animateScreen);
         c.roller.$cloneScreens.push($animateScreen);
+        c.roller.beforeMove(index);
 
-        if(speed !== 0) {
-            //при transition-duration = 0 событие transitionend не срабатывает, поэтому не удаляется
-            //первый клонированный слайд
-            $animateScreen.one('transitionend webkitTransitionEnd', function() {
-                c.roller.$cloneScreens[0].hide();
-                // в webkit дергает экран при удалении нод
+        $animateScreen.animate({ top: 0, left: 0}, speed, function() {
+            if(c.roller.$cloneScreens.length > 1) {
+                 //в webkit дергает экран при удалении нод
                 // используем timeout для фикса этого бага
                 setTimeout(function() {
-                    c.roller.$cloneScreens[0].remove();
+                    c.roller.$cloneScreens[0] && c.roller.$cloneScreens[0].remove();
                     c.roller.$cloneScreens.shift();
                 }, 1000);
-
-                c.trigger('changeCurrentScreen', {index: index});
-            });
-        } else {
+            }
             c.trigger('changeCurrentScreen', {index: index});
-        }
+        });
     };
 }(jQuery));
 
