@@ -1,6 +1,6 @@
-language: node_js
-node_js:
-  - '0.12'
-
-after_script:
-  - npm run tests
+#language: node_js
+#node_js:
+#  - '0.12'
+#
+#after_script:
+#  - npm run tests
