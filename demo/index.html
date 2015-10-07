@@ -6,15 +6,15 @@
     <link href="../screen-roller.css" rel="stylesheet">
 
     <script src="../vendors/jquery.js"></script>
-    <script src="../vendors/wheel-indicator.js"></script>
-    <script src="../vendors/hammer.js"></script>
+    <!--<script src="../vendors/hammer.js"></script>-->
 
     <!--screen-roller-->
     <script src="../lib/core/core.js"></script>
     <!--<script src="../lib/animation/base.js"></script>-->
     <script src="../lib/animation/influx.js"></script>
-    <script src="../lib/content/solid-mod.js"></script>
-    <!--<script src="../lib/control/hash.js"></script>-->
+    <!--<script src="../lib/content/solid-mod.js"></script>-->
+    <script src="../lib/control/hash.js"></script>
+    <script src="../lib/control/wheel.js"></script>
     <!--screen-roller-->
 
 </head>
@@ -34,7 +34,10 @@
 <div class="roller">
     <div class="screen" data-hash="first">1</div>
     <div class="screen" data-hash="second">2</div>
-    <div class="screen" data-hash="third">3</div>
+    <div class="screen" data-hash="third">
+        3
+        <div class="withoutMovement">without Movement Event</div>
+    </div>
     <div class="screen" data-hash="fourth">4</div>
     <div class="screen" data-hash="fifth">5</div>
     <div class="screen" data-hash="sixth">6</div>
@@ -46,18 +49,6 @@
 <script type="text/javascript">
 
     (function(){
-        var indicator = new WheelIndicator({
-            preventMouse: true,
-            callback: function(e) {
-                if(e.direction === 'down') {
-                    roller.moveTo('down');
-                }
-
-                if(e.direction === 'up') {
-                    roller.moveTo('up');
-                }
-            }
-        });
 
         setCurrentItemMenu = function(index) {
             $('.menu li').removeClass('current')
@@ -79,7 +70,7 @@
 
         var roller = $('.roller').screenroller({
             showScrollBar: true,
-            startScreen: 2,
+            startScreen: 0,
             directionAnimation: 'from-left',
             reverseAnimation: true,
             changeScreen: function(index) {
@@ -94,6 +85,14 @@
             onSolidMod: function () {
                 indicator.turnOff();
             }
+        });
+
+        $('body').on('mouseenter', '.withoutMovement', function(){
+            roller.offEventMovement();
+        });
+
+        $('body').on('mouseleave', '.withoutMovement', function(){
+            roller.onEventMovement();
         });
     }())
 
