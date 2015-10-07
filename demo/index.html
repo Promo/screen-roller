@@ -11,10 +11,10 @@
 
     <!--screen-roller-->
     <script src="../lib/core/core.js"></script>
-    <script src="../lib/animation/base.js"></script>
+    <!--<script src="../lib/animation/base.js"></script>-->
     <script src="../lib/animation/influx.js"></script>
     <script src="../lib/content/solid-mod.js"></script>
-    <script src="../lib/control/hash.js"></script>
+    <!--<script src="../lib/control/hash.js"></script>-->
     <!--screen-roller-->
 
 </head>
@@ -79,8 +79,9 @@
 
         var roller = $('.roller').screenroller({
             showScrollBar: true,
-//            startScreen: 2,
-            directionAnimation: 'from-top',
+            startScreen: 2,
+            directionAnimation: 'from-left',
+            reverseAnimation: true,
             changeScreen: function(index) {
                 setCurrentItemMenu(index);
             },
