@@ -10,11 +10,12 @@
 
     <!--screen-roller-->
     <script src="../lib/core/core.js"></script>
-    <!--<script src="../lib/animation/base.js"></script>-->
-    <script src="../lib/animation/influx.js"></script>
-    <!--<script src="../lib/content/solid-mod.js"></script>-->
-    <script src="../lib/control/hash.js"></script>
-    <script src="../lib/control/wheel.js"></script>
+    <script src="../lib/animation/base.js"></script>
+    <script src="../lib/control/touch.js"></script>
+    <!--<script src="../lib/animation/influx.js"></script>-->
+    <script src="../lib/content/solid-mod.js"></script>
+    <!--<script src="../lib/control/hash.js"></script>-->
+    <!--<script src="../lib/control/wheel.js"></script>-->
     <!--screen-roller-->
 
 </head>
@@ -72,6 +73,7 @@
             showScrollBar: true,
             startScreen: 0,
             directionAnimation: 'from-left',
+            mouseEmulateTouch: true,
             reverseAnimation: true,
             changeScreen: function(index) {
                 setCurrentItemMenu(index);
@@ -80,19 +82,22 @@
                 setCurrentItemMenu(index);
             },
             onScreenMod: function() {
-                indicator.turnOn();
+                console.log('onScreenMod');
             },
             onSolidMod: function () {
-                indicator.turnOff();
+                console.log('onSolidMod');
             }
         });
 
         $('body').on('mouseenter', '.withoutMovement', function(){
-            roller.offEventMovement();
+            console.log(roller.offEventsTouch);
+            roller.offEventsWheel && roller.offEventsWheel();
+            roller.offEventsTouch && roller.offEventsTouch();
         });
 
         $('body').on('mouseleave', '.withoutMovement', function(){
-            roller.onEventMovement();
+            roller.bindEventsWheel && roller.bindEventsWheel();
+            roller.bindEventsTouch && roller.bindEventsTouch();
         });
     }())
 

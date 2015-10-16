@@ -6,6 +6,8 @@ body
 {
     height: 100%;
     min-height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 
@@ -19,6 +21,9 @@ body
     height: 100%;
     -webkit-transition: transform 0.5s linear;
     transition: transform 0.5s linear;
+
+    /*-webkit-transition: transform 0s linear !important;*/
+    /*transition: transform 0s linear !important;*/
 }
 .base-animation .screen
 {
@@ -61,8 +66,8 @@ body
 {
     position: relative;
     transform: none;
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
+    /*-webkit-transition-duration: 0s;*/
+    /*transition-duration: 0s;*/
 }
 
 .solid-page .screen
