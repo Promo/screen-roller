@@ -13,9 +13,9 @@
     <script src="../lib/animation/base.js"></script>
     <script src="../lib/control/touch.js"></script>
     <!--<script src="../lib/animation/influx.js"></script>-->
-    <script src="../lib/content/solid-mod.js"></script>
     <!--<script src="../lib/control/hash.js"></script>-->
-    <!--<script src="../lib/control/wheel.js"></script>-->
+    <script src="../lib/control/wheel.js"></script>
+    <script src="../lib/content/solid-mod.js"></script>
     <!--screen-roller-->
 
 </head>
@@ -90,7 +90,6 @@
         });
 
         $('body').on('mouseenter', '.withoutMovement', function(){
-            console.log(roller.offEventsTouch);
             roller.offEventsWheel && roller.offEventsWheel();
             roller.offEventsTouch && roller.offEventsTouch();
         });

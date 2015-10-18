@@ -74,4 +74,9 @@ body
 {
     height: auto;
 }
+
+.solid-mod body
+{
+    overflow: auto;
+}
 /* solid mod - end */
