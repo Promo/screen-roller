@@ -1,0 +1,299 @@
+
+body {
+    background: #fff none repeat scroll 0 0;
+    color: #000;
+    font: 0.8em Arial,Helvetica,sans-serif;
+    margin: 0;
+    padding: 0 0 1em;
+    position: relative;
+    z-index: 0;
+}
+wbr {
+    display: inline-block;
+}
+:link:hover, *:visited:hover {
+    color: #f00 !important;
+}
+.i-ua_platform_ios.b-page__body {
+    cursor: pointer;
+}
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.roller {
+    color: #333;
+    height: 100%;
+    position: fixed;
+    text-align: center;
+    width: 100%;
+}
+.solid-mod body {
+    height: auto;
+    overflow: auto;
+}
+.solid-mod .roller__screen {
+    height: auto;
+    padding: 100px 0;
+}
+.solid-mod .roller {
+    position: relative;
+}
+.roller a {
+    color: #3d71bd;
+    text-decoration: none;
+}
+.foot {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+.copyright {
+    white-space: nowrap;
+}
+.copyright {
+    color: #999;
+    font-size: 13px;
+}
+.foot__wrap-share {
+    bottom: 30px;
+    left: 0;
+    position: absolute;
+}
+.foot__wrap-links {
+    bottom: 30px;
+    position: absolute;
+    right: 0;
+}
+.foot__link {
+    display: inline-block;
+    font-size: 13px;
+    margin: 0 0 0 24px;
+    vertical-align: top;
+}
+.foot__link a {
+    color: #3d71bd;
+    text-decoration: none;
+}
+.foot__container {
+    margin: auto;
+    position: relative;
+    width: 920px;
+}
+.image {
+    border: 0 none;
+    font: 0px/0 a;
+}
+.header {
+    position: relative;
+    z-index: 10;
+}
+.header .layout__col {
+    display: table-cell;
+}
+.header {
+    width: 100%;
+}
+.header {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.layout__col {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.logo {
+    display: inline-block;
+    width: 82px;
+}
+.logo .logo__link {
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    height: 35px;
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+}
+
+.header__logo-wrap {
+    left: 20px;
+    position: absolute;
+    top: 20px;
+}
+.header__share-wrap {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.promo-button {
+    -moz-osx-font-smoothing: grayscale;
+    -moz-user-select: none;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 center;
+    border: 0 none;
+    color: #323232;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial,Helvetica,sans-serif;
+    outline: 0 none;
+    overflow: visible;
+    position: relative;
+    text-decoration: none !important;
+}
+.promo-button::-moz-focus-inner {
+    border: 0 none;
+    padding: 0;
+}
+.promo-button::before {
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.promo-button .promo-button__text {
+    position: relative;
+}
+.promo-button__text {
+    position: relative;
+}
+.promo-button_size_s {
+    border-radius: 4px;
+    font-size: 18px;
+    height: 40px;
+    line-height: 38px;
+    padding: 0 18px;
+}
+.promo-button_size_s::before {
+    border-radius: 4px;
+}
+.promo-button_theme_normal::before {
+    background: #fee133 none repeat scroll 0 0;
+}
+.promo-button_theme_normal.promo-button_hovered_yes::before {
+    background: #ffe759 none repeat scroll 0 0;
+}
+.promo-button_theme_normal, .promo-button_theme_normal:hover, .promo-button_theme_normal:visited:hover {
+    color: #323232 !important;
+}
+.promo-button_theme_normal.promo-button_size_xl::before {
+    box-shadow: 0 -4px #d0ad24 inset;
+}
+.promo-button_theme_normal.promo-button_size_l::before {
+    box-shadow: 0 -4px #d0ad24 inset;
+}
+.promo-button_theme_normal.promo-button_size_m::before {
+    box-shadow: 0 -3px #d0ad24 inset;
+}
+.promo-button_theme_normal.promo-button_size_s::before {
+    box-shadow: 0 -2px #d0ad24 inset;
+}
+.promo-button_theme_normal.promo-button_pressed_yes:not(.promo-button_view_flying)::before {
+    box-shadow: 0 -1px #d0ad24 inset;
+}
+.promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_s::before, .promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_s .promo-button__text {
+    top: 1px;
+}
+.promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_m::before, .promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_m .promo-button__text {
+    top: 2px;
+}
+.promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_l::before, .promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_l .promo-button__text, .promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_xl::before, .promo-button_theme_normal.promo-button_pressed_yes.promo-button_size_xl .promo-button__text {
+    top: 3px;
+}
+.roller__content {
+    font-size: 15px;
+    height: 100%;
+    line-height: 22px;
+    margin: auto;
+    width: 800px;
+}
+.roller__content::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.roller__container {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 99%;
+}
+.roller__title {
+    font-size: 32px;
+    margin: 0 0 32px;
+}
+.roller__cell .roller__title {
+    text-align: left;
+}
+.roller__title-image {
+    margin: 0 15px 0 0;
+    position: relative;
+    top: 15px;
+}
+.roller__wrap-button {
+    margin: 40px 0 0;
+}
+.roller__wrap-review {
+    font-size: 13px;
+    margin: 12px 0 0;
+}
+.roller__row {
+    display: table;
+    width: 100%;
+}
+.roller__cell {
+    box-sizing: border-box;
+    display: table-cell;
+    padding-left: 30px;
+    padding-right: 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 50%;
+}
+.roller__cell:first-of-type {
+    padding-left: 0;
+    padding-right: 30px;
+}
+.roller__label {
+    font-size: 18px;
+    margin: 16px 0 0;
+    text-align: center;
+}
+.roller__text {
+    margin: 0 0 40px;
+}
+.roller__cell .roller__text {
+    text-align: left;
+}
+.roller__title_type_white {
+    color: #fff;
+    font-size: 42px;
+}
+.roller__text_type_white {
+    color: #fff;
+    font-size: 18px;
+}
+.roller__screen {
+    box-sizing: border-box;
+    height: 100%;
+    position: relative;
+}
+.roller__screen_color_white {
+    background: #fff none repeat scroll 0 0;
+}
+.roller__screen_color_gray {
+    background: #f2f2f2 none repeat scroll 0 0;
+}
+.roller__screen_color_turquoise {
+    background: rgba(0, 0, 0, 0) url("https://avatars.yandex.net/get-bunker/c807f0743496a80a3bcd3e17c5126f8abb438d29/normal/c807f0.png") repeat scroll 0 0 / cover ;
+}
