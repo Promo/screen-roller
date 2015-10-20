@@ -2,31 +2,31 @@ body, html {
     margin: 0;
     padding: 0;
 }
-.solid-page .screen
+.solid-mod .screen
 {
     margin: 20px;
 }
-.solid-page .screen[data-hash="first"]
+.solid-mod .screen[data-hash="first"]
 {
     height: 500px;
 }
-.solid-page .screen:nth-child(2)
+.solid-mod .screen:nth-child(2)
 {
     height: 200px;
 }
-.solid-page .screen:nth-child(3)
+.solid-mod .screen:nth-child(3)
 {
     height: 800px;
 }
-.solid-page .screen:nth-child(4)
+.solid-mod .screen:nth-child(4)
 {
     height: 300px;
 }
-.solid-page .screen:nth-child(5)
+.solid-mod .screen:nth-child(5)
 {
     height: 300px;
 }
-.solid-page .screen:nth-child(6)
+.solid-mod .screen:nth-child(6)
 {
     height: 500px;
 }
