@@ -20,9 +20,18 @@ body
     /*-webkit-transition: transform 0s linear !important;*/
     /*transition: transform 0s linear !important;*/
 }
+
+.base-animation.axis-x .screen
+{
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
 .base-animation .screen
 {
     height: 100%;
+    position: relative;
 }
 /* base animate - end */
 
