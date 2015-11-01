@@ -59,18 +59,18 @@
         };
 
         $('.menu li').on('click', function() {
-            roller.moveTo($(this).index())
+            screenRoller.moveTo($(this).index())
         });
 
         $('.arrows .up').on('click', function() {
-            roller.moveTo('up');
+            screenRoller.moveTo('up');
         });
 
-        $('.arrows .down').on('click', function() {
-            roller.moveTo('down');
+        $('.sr .down').on('click', function() {
+            screenRoller.moveTo('down');
         });
 
-        var roller = $('.roller').screenroller({
+        var screenRoller = $('.roller').screenroller({
             showScrollBar: true,
             startScreen: 2,
             influxDir: 'from-right',
@@ -91,13 +91,13 @@
         });
 
         $('body').on('mouseenter', '.withoutMovement', function(){
-            roller.offEventsWheel && roller.offEventsWheel();
-            roller.offEventsTouch && roller.offEventsTouch();
+            screenRoller.roller.offEventsWheel && screenRoller.roller.offEventsWheel();
+            screenRoller.roller.offEventsTouch && screenRoller.roller.offEventsTouch();
         });
 
         $('body').on('mouseleave', '.withoutMovement', function(){
-            roller.bindEventsWheel && roller.bindEventsWheel();
-            roller.bindEventsTouch && roller.bindEventsTouch();
+            screenRoller.roller.bindEventsWheel && screenRoller.roller.bindEventsWheel();
+            screenRoller.roller.bindEventsTouch && screenRoller.roller.bindEventsTouch();
         });
     }())
 
