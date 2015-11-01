@@ -92,12 +92,12 @@
 
         $('body').on('mouseenter', '.withoutMovement', function(){
             screenRoller.roller.offWatcherWheel && screenRoller.roller.offWatcherWheel();
-            screenRoller.roller.offEventsTouch && screenRoller.roller.offEventsTouch();
+            screenRoller.roller.offWatcherTouch && screenRoller.roller.offWatcherTouch();
         });
 
         $('body').on('mouseleave', '.withoutMovement', function(){
             screenRoller.roller.onWatcherWheel && screenRoller.roller.onWatcherWheel();
-            screenRoller.roller.bindEventsTouch && screenRoller.roller.bindEventsTouch();
+            screenRoller.roller.onWatcherTouch && screenRoller.roller.onWatcherTouch();
         });
     }())
 
