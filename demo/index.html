@@ -91,12 +91,12 @@
         });
 
         $('body').on('mouseenter', '.withoutMovement', function(){
-            screenRoller.roller.offEventsWheel && screenRoller.roller.offEventsWheel();
+            screenRoller.roller.offWatcherWheel && screenRoller.roller.offWatcherWheel();
             screenRoller.roller.offEventsTouch && screenRoller.roller.offEventsTouch();
         });
 
         $('body').on('mouseleave', '.withoutMovement', function(){
-            screenRoller.roller.bindEventsWheel && screenRoller.roller.bindEventsWheel();
+            screenRoller.roller.onWatcherWheel && screenRoller.roller.onWatcherWheel();
             screenRoller.roller.bindEventsTouch && screenRoller.roller.bindEventsTouch();
         });
     }())
