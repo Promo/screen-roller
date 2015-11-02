@@ -1,0 +1,21 @@
+.base-animation
+{
+    top: 0;
+    left: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.base-animation.axis-x .screen
+{
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+.base-animation .screen
+{
+    height: 100%;
+    position: relative;
+}
