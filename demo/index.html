@@ -8,11 +8,11 @@
     <script src="../lib/core/core.js"></script>
     <!--<link href="../lib/core/core.css" rel="stylesheet">-->
 
-    <!--<script src="../lib/animation/base/base.js"></script>-->
-    <!--<link href="../lib/animation/base/base.css" rel="stylesheet">-->
+    <script src="../lib/animation/base/base.js"></script>
+    <link href="../lib/animation/base/base.css" rel="stylesheet">
 
-    <script src="../lib/animation/influx/influx.js"></script>
-    <link href="../lib/animation/influx/influx.css" rel="stylesheet">
+    <!--<script src="../lib/animation/influx/influx.js"></script>-->
+    <!--<link href="../lib/animation/influx/influx.css" rel="stylesheet">-->
 
     <script src="../lib/content/solid-mod/solid-mod.js"></script>
     <link href="../lib/content/solid-mod/solid-mod.css" rel="stylesheet">
@@ -22,6 +22,8 @@
     <script src="../lib/control/hash/hash.js"></script>
 
     <script src="../lib/control/wheel/wheel.js"></script>
+
+    <script src="../lib/control/keybord/keybord.js"></script>
 </head>
 <body>
 <ul class="menu">
@@ -79,6 +81,8 @@
             influxDir: 'from-right',
             mouseEmulateTouch: true,
             reverseAnimation: true,
+            keyboard: { next: [ 83, 40 ], prev: [ 87, 38 ] },
+
             changeScreen: function(index) {
                 setCurrentItemMenu(index);
             },
