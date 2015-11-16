@@ -55,27 +55,6 @@ body, html {
     background: #efbefd;
 }
 
-.menu
-{
-    list-style: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 20;
-}
-.menu li
-{
-    display: inline-block;
-    text-align: center;
-    width: 40px;
-    line-height: 40px;
-    background: rgba(255, 255, 0, 0.5);
-    cursor: pointer;
-}
-.menu li.current
-{
-    background: rgba(255, 0, 255, 0.5);
-}
 .arrows
 {
     position: fixed;

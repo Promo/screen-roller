@@ -17,6 +17,9 @@
     <script src="../lib/content/solid-mod/solid-mod.js"></script>
     <link href="../lib/content/solid-mod/solid-mod.css" rel="stylesheet">
 
+    <script src="../lib/control/menu/menu.js"></script>
+    <link href="../lib/control/menu/menu.css" rel="stylesheet">
+
     <script src="../lib/control/touch/touch.js"></script>
 
     <script src="../lib/control/hash/hash.js"></script>
@@ -26,14 +29,14 @@
     <script src="../lib/control/keybord/keybord.js"></script>
 </head>
 <body>
-<ul class="menu">
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>6</li>
-</ul>
+<!--<ul class="menu">-->
+    <!--<li>1</li>-->
+    <!--<li>2</li>-->
+    <!--<li>3</li>-->
+    <!--<li>4</li>-->
+    <!--<li>5</li>-->
+    <!--<li>6</li>-->
+<!--</ul>-->
 <ul class="arrows">
     <li class="up">up</li>
     <li class="down">down</li>
@@ -83,11 +86,23 @@
             reverseAnimation: true,
             keyboard: { next: [ 83, 40 ], prev: [ 87, 38 ] },
 
+            menu: {
+//                basis: $('.menu li'),
+//                basis: true,
+                basis: 'data-hash',   //string(attr of screen) or array or $obj
+                position: 'after',      //string(after, before, begin, end)
+                classMenu: 'menu',      //string
+                classItemMenu: 'item',  //string
+                classCurrentItem: '',   //string
+                tagMenu: 'ul',          //string(tag)
+                tagItemMenu: 'li'       //string(tag)
+            },
+
             changeScreen: function(index) {
-                setCurrentItemMenu(index);
+
             },
             beforeMove: function(index) {
-                setCurrentItemMenu(index);
+
             },
             offSolidMod: function() {
                 console.log('offSolidMod');
