@@ -8,11 +8,11 @@
     <script src="../lib/core/core.js"></script>
     <!--<link href="../lib/core/core.css" rel="stylesheet">-->
 
-    <script src="../lib/animation/slide/slide-animation.js"></script>
-    <link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">
+    <!--<script src="../lib/animation/slide/slide-animation.js"></script>-->
+    <!--<link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">-->
 
-    <!--<script src="../lib/animation/influx/influx-animation.js"></script>-->
-    <!--<link href="../lib/animation/influx/influx.css" rel="stylesheet">-->
+    <script src="../lib/animation/influx/influx-animation.js"></script>
+    <link href="../lib/animation/influx/influx-animation.css" rel="stylesheet">
 
     <script src="../lib/content/solid-mod/solid-mod.js"></script>
     <link href="../lib/content/solid-mod/solid-mod.css" rel="stylesheet">
@@ -81,6 +81,11 @@
         var screenRoller = $('.roller').screenroller({
             modules: {
                 hash: true,
+                'influx-animation': {
+                    direction: 'from-top',
+                    reverseAnimation: true
+                }
+
             },
             debug: true
         });
