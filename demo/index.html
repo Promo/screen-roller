@@ -8,10 +8,10 @@
     <script src="../lib/core/core.js"></script>
     <!--<link href="../lib/core/core.css" rel="stylesheet">-->
 
-    <script src="../lib/animation/base/base.js"></script>
-    <link href="../lib/animation/base/base.css" rel="stylesheet">
+    <script src="../lib/animation/slide/slide-animation.js"></script>
+    <link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">
 
-    <!--<script src="../lib/animation/influx/influx.js"></script>-->
+    <!--<script src="../lib/animation/influx/influx-animation.js"></script>-->
     <!--<link href="../lib/animation/influx/influx.css" rel="stylesheet">-->
 
     <script src="../lib/content/solid-mod/solid-mod.js"></script>
@@ -79,38 +79,12 @@
         });
 
         var screenRoller = $('.roller').screenroller({
-            showScrollBar: true,
-            startScreen: 2,
-            influxDir: 'from-right',
-            mouseEmulateTouch: true,
-            reverseAnimation: true,
-            keyboard: { next: [ 83, 40 ], prev: [ 87, 38 ] },
-
-            menu: {
-//                basis: $('.menu li'),
-//                basis: true,
-                basis: 'data-hash',   //string(attr of screen) or array or $obj
-                position: 'after',      //string(after, before, begin, end)
-                classMenu: 'menu',      //string
-                classItemMenu: 'item',  //string
-                classCurrentItem: '',   //string
-                tagMenu: 'ul',          //string(tag)
-                tagItemMenu: 'li'       //string(tag)
-            },
-
-            changeScreen: function(index) {
-
-            },
-            beforeMove: function(index) {
-
-            },
-            offSolidMod: function() {
-                console.log('offSolidMod');
-            },
-            onSolidMod: function () {
-                console.log('onSolidMod');
+            modules: {
+                hash: true,
             }
         });
+
+
 
         $('body').on('mouseenter', '.withoutMovement', function(){
             screenRoller.roller.offWatcherWheel && screenRoller.roller.offWatcherWheel();
