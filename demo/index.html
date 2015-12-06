@@ -6,10 +6,10 @@
     <script src="../vendors/jquery.js"></script>
 
     <script src="../lib/core/core.js"></script>
-    <!--<link href="../lib/core/core.css" rel="stylesheet">-->
+    <link href="../lib/core/core.css" rel="stylesheet">
 
-    <!--<script src="../lib/animation/slide/slide-animation.js"></script>-->
-    <!--<link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">-->
+    <script src="../lib/animation/slide/slide-animation.js"></script>
+    <link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">
 
     <script src="../lib/animation/influx/influx-animation.js"></script>
     <link href="../lib/animation/influx/influx-animation.css" rel="stylesheet">
@@ -29,14 +29,14 @@
     <script src="../lib/control/keybord/keybord.js"></script>
 </head>
 <body>
-<!--<ul class="menu">-->
-    <!--<li>1</li>-->
-    <!--<li>2</li>-->
-    <!--<li>3</li>-->
-    <!--<li>4</li>-->
-    <!--<li>5</li>-->
-    <!--<li>6</li>-->
-<!--</ul>-->
+<ul class="menu">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+</ul>
 <ul class="arrows">
     <li class="up">up</li>
     <li class="down">down</li>
@@ -81,10 +81,20 @@
         var screenRoller = $('.roller').screenroller({
             modules: {
                 hash: true,
+//                'slide-animation': true,
                 'influx-animation': {
-                    direction: 'from-top',
                     reverseAnimation: true
-                }
+                },
+
+                menu: {
+                    position: 'before',
+                    basis: $('.menu li')
+                },
+                keyboard: true,
+                touch: {
+                    mouseEmulateTouch: true
+                },
+                'solid-mod': true
 
             },
             debug: true
@@ -104,3 +114,31 @@
     }())
 
 </script>
+
+<style>
+    .menu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        z-index: 100;
+        list-style: none;
+    }
+
+    .menu li {
+        border: 1px solid green;
+        display: inline-block;
+        vert-align: top;
+        height: 40px;
+        width: 40px;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+    }
+
+    .menu li.current {
+        background: black;
+        color: #fff;
+        cursor: default;
+    }
+</style>
