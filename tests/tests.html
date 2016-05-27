@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ScreenRoller test</title>
+
+    <link rel="stylesheet" href="tests.css">
+
+    <link rel="stylesheet" href="vendors/qunit/qunit.css">
+    <script src="vendors/qunit/qunit.js"></script>
+    <script src="vendors/sinon/sinon.js"></script>
+
+    <script src="../vendors/jquery.js"></script>
+
+    <script src="../lib/core/core.js"></script>
+    <link href="../lib/core/core.css" rel="stylesheet">
+
+    <script src="../lib/animation/slide/slide-animation.js"></script>
+    <link href="../lib/animation/slide/slide-animation.css" rel="stylesheet">
+
+    <script src="../lib/content/simple-page/simple-page.js"></script>
+    <link href="../lib/content/simple-page/simple-page.css" rel="stylesheet">
+
+    <script src="../lib/navigation/menu/menu.js"></script>
+
+    <script src="../lib/control/wheel/wheel.js"></script>
+
+    <script src="../lib/navigation/hash/hash.js"></script>
+
+    <script src="../lib/control/keyboard/keyboard.js"></script>
+
+    <script src="../lib/control/touch/touch.js"></script>
+</head>
+<body>
+
+<div class="stab" id="stab">
+    <ul class="menu">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+    </ul>
+
+    <div class="roller">
+        <div class="screen" data-hash="first">1</div>
+        <div class="screen" data-hash="second">2</div>
+        <div class="screen" data-hash="third">
+            3
+            <div class="withoutMovement">without Movement Event</div>
+        </div>
+        <div class="screen" data-hash="fourth">4</div>
+        <div class="screen" data-hash="fifth">5</div>
+        <div class="screen" data-hash="sixth">6</div>
+    </div>
+</div>
+
+<div id="qunit"></div>
+
+<script>
+    var depot = {};
+    var $stab = $('#stab');
+    var $body = $('body');
+
+    QUnit.testStart(function(details) {
+        var testId = details.testId;
+        var $clone = $stab.clone().attr('id', testId);
+        var $roller = $clone.find('.roller');
+
+        depot[ testId ] = {
+            $stab: $clone,
+            $roller: $roller
+        };
+
+        $body.append($clone);
+    });
+
+    QUnit.testDone(function(details) {
+        var testId = details.testId;
+        var $stab = depot[ testId ].$stab;
+        var $roller = depot[ testId ].$roller;
+        var roller = $roller.data().roller;
+
+        roller && roller.destruct();
+        $stab.remove();
+        delete depot[ testId ];
+    });
+</script>
+
+<script src="core/core.js"></script>
+<script src="slide-animation/slide-animation.js"></script>
+<!--<script src="hash/hash.js"></script>-->
+<script src="keyboard/keyboard.js"></script>
+<script src="wheel/wheel.js"></script>
+<script src="menu/menu.js"></script>
+<script src="touch/touch.js"></script>
+<script src="simple-page/simple-page.js"></script>
+<link href="simple-page/simple-page.css" rel="stylesheet">
+
+
+
+</body>
+</html>
