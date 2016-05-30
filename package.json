@@ -1,0 +1,34 @@
+{
+  "name": "screen-roller",
+  "version": "0.0.0",
+  "description": "jQuery-плагин для полноэкранного просмотра слайдов с возможностью переключения в стандартый режим отображения сайта (для маленьких экранов).",
+  "main": "screen-roller.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/Promo/screen-roller.git"
+  },
+  "keywords": [
+    "fullpage"
+  ],
+  "author": "Ruslan Krohin <ulitcos@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Promo/screen-roller/issues"
+  },
+  "homepage": "https://github.com/Promo/screen-roller#readme",
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
