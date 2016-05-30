@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint --fix lib"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,10 @@
   "homepage": "https://github.com/Promo/screen-roller#readme",
   "devDependencies": {
     "css-loader": "^0.23.1",
+    "eslint": "^2.11.0",
+    "eslint-config-standard": "^5.3.1",
+    "eslint-plugin-promise": "^1.3.1",
+    "eslint-plugin-standard": "^1.3.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
