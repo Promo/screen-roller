@@ -501,9 +501,7 @@
 	    var END = 35;
 	    var HOME = 36;
 
-	    var ARROWLEFT = 37;
 	    var ARROWUP = 38;
-	    var ARROWRIGHT = 39;
 	    var ARROWDOWN = 40;
 
 	    var DEFAULT_OPTIONS = {
@@ -778,7 +776,7 @@
 	            return this.lastMovement;
 	        }
 
-	        return endPoint < startPoint ? 'next' : 'prev'
+	        return endPoint < startPoint ? 'next' : 'prev';
 	    };
 
 	    var _getcurrentPoint = function(e) {
@@ -1126,14 +1124,6 @@
 /***/ function(module, exports) {
 
 	(function($) {
-	    var _log = function(message, type) {
-	        type = type || 'log';
-
-	        if(roller.options.debug) {
-	            console && console[ type ](message);
-	        }
-	    };
-
 	    var _getNextScreen = function(direction) {
 	        var nextIndex = -1;
 	        var currentIndex = this.currentScreen;
@@ -1145,20 +1135,20 @@
 
 	        if(typeof direction === 'string') {
 	            switch(direction) {
-	                case 'prev':
-	                    nextIndex = currentIndex - 1;
-	                    break;
-	                case 'next':
-	                    nextIndex = currentIndex + 1;
-	                    break;
-	                case 'last':
-	                    nextIndex = countScreens - 1;
-	                    break;
-	                case 'first':
-	                    nextIndex = 0;
-	                    break;
-	                default:
-	                    nextIndex = -1;
+	            case 'prev':
+	                nextIndex = currentIndex - 1;
+	                break;
+	            case 'next':
+	                nextIndex = currentIndex + 1;
+	                break;
+	            case 'last':
+	                nextIndex = countScreens - 1;
+	                break;
+	            case 'first':
+	                nextIndex = 0;
+	                break;
+	            default:
+	                nextIndex = -1;
 	            }
 	        }
 
@@ -1182,13 +1172,14 @@
 	            if(params) {
 	                //if params is boolean, when replace to object(write options in modules)
 	                if(params === true) {
-	                    modules[ name ] = {}
+	                    modules[ name ] = {};
 	                }
 
 	                if(typeof($.fn[ PLAGIN_NAME + '-' + name ]) === 'function') {
 	                    $el[ PLAGIN_NAME + '-' + name ](params);
 	                } else {
-	                    _log('module ' + name + ' do not connect', 'error');
+	                    // eslint-disable-next-line no-console
+	                    console && console.error('module ' + name + ' do not connect', 'error');
 	                }
 	            }
 	        });
@@ -1400,12 +1391,12 @@
 	        }
 	    };
 
-	     var _removeListeners = function() {
-	         var $el = this.core.$el;
+	    var _removeListeners = function() {
+	        var $el = this.core.$el;
 
-	         $el.off(EVENT_SCREEN_MOVE);
-	         _offHashWatcher();
-	     };
+	        $el.off(EVENT_SCREEN_MOVE);
+	        _offHashWatcher();
+	    };
 
 	    function Hash(params) {
 	        this.core = params.roller;
@@ -1493,7 +1484,7 @@
 	        this.type = MODULE_TYPE;
 	        this.enable();
 
-	        _addListeners.call(this)
+	        _addListeners.call(this);
 	    }
 
 	    Menu.prototype.enable = function() {
