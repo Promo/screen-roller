@@ -1124,6 +1124,28 @@
 /***/ function(module, exports) {
 
 	(function($) {
+	    var PLAGIN_NAME = 'screenroller';
+	    var SCREEN_CLASS_NAME = 'screen';
+	    var SCREEN_SELECTOR = '.' + SCREEN_CLASS_NAME;
+	    var WRAP_CLASS_NAME = 'wrap-roller';
+	    var WRAP_NODE = '<div class="' + WRAP_CLASS_NAME + '"></div>';
+	    var EVENT_REQUEST_MOVE = 'request-move';
+	    var PROPERTY_NAME = 'roller';
+	    var DEFAULT_OPTIONS = {
+	        modules: {
+	            touch: false,
+	            'slide-animation': false,
+	            wheel: false,
+	            menu: false,
+	            keyboard: false,
+	            hash: false,
+	            'simple-page': false
+	        },
+	        speed: 500,
+	        axis: 'y',
+	        debug: true
+	    };
+	    
 	    var _getNextScreen = function(direction) {
 	        var nextIndex = -1;
 	        var currentIndex = this.currentScreen;
@@ -1231,28 +1253,6 @@
 
 	    var _removeListeners = function() {
 	        this.$el.off(EVENT_REQUEST_MOVE);
-	    };
-
-	    var PLAGIN_NAME = 'screenroller';
-	    var SCREEN_CLASS_NAME = 'screen';
-	    var SCREEN_SELECTOR = '.' + SCREEN_CLASS_NAME;
-	    var WRAP_CLASS_NAME = 'wrap-roller';
-	    var WRAP_NODE = '<div class="' + WRAP_CLASS_NAME + '"></div>';
-	    var EVENT_REQUEST_MOVE = 'request-move';
-	    var PROPERTY_NAME = 'roller';
-	    var DEFAULT_OPTIONS = {
-	        modules: {
-	            touch: false,
-	            'slide-animation': false,
-	            wheel: false,
-	            menu: false,
-	            keyboard: false,
-	            hash: false,
-	            'simple-page': false
-	        },
-	        speed: 500,
-	        axis: 'y',
-	        debug: true
 	    };
 
 	    var ScreenRoller = function(params) {
