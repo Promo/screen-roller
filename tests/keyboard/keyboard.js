@@ -1,7 +1,7 @@
 QUnit.test('[keyboard]: base methods', function(assert) {
     var testId = assert.test.testId;
     var $roller = depot[ testId ].$roller;
-    var roller = $roller.screenroller({ modules: { keyboard: { next: [ 83 ], prev: [ 87 ] } } }).roller;
+    var roller = $roller.screenroller({ modules: { keyboard: { next: [ 83 ], prev: [ 87 ] } }}).roller;
     var module = roller.modules.keyboard;
 
     assert.ok(module, 'expect module to be');
@@ -14,7 +14,7 @@ QUnit.test('[keyboard]: base methods', function(assert) {
 QUnit.test('[keyboard]:', function(assert) {
     var testId = assert.test.testId;
     var $roller = depot[ testId ].$roller;
-    var roller = $roller.screenroller({ modules: { keyboard: { next: [ 83 ], prev: [ 87 ] } } }).roller;
+    var roller = $roller.screenroller({ modules: { keyboard: { next: [ 83 ], prev: [ 87 ] } }}).roller;
     var module = roller.modules.keyboard;
 
     var keyDownTrigger = function(key) {
