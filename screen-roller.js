@@ -106,6 +106,7 @@
 	    var EVENT_TOUCH_END = 'touch-end';
 	    var EVENT_TOUCH_CANSEL = 'touch-cansel';
 	    var EVENT_RESTORE_OFFSET = 'restore-offset';
+	    var EVENT_FINISHED_ANIMATION = 'finished-animation';
 
 	    var _setStyles = function() {
 	        this.core.$wrap.addClass(MODULE_NAME);
@@ -156,8 +157,8 @@
 	        $el.css('transition-duration', speed / 1000 + 's');
 	        $el.css('transform', value);
 	        $el.off('transitionend webkitTransitionEnd');
-	        $el.one('transitionend webkitTransitionEnd', function() {
-	            $el.trigger('screen-has-changed', {
+	        $el.on('transitionend webkitTransitionEnd', function() {
+	            $el.trigger(EVENT_FINISHED_ANIMATION, {
 	                direction: index,
 	                initiator: MODULE_NAME
 	            });
@@ -276,7 +277,7 @@
 	    var EVENT_SCROLL = 'scroll.' + MODULE_NAME;
 	    var EVENT_MOVE_SCREEN = 'move-screen.' + MODULE_NAME;
 	    var EVENT_REQUEST_MOVE = 'request-move';
-	    var EVENT_SCREEN_CHANGED = 'screen-has-changed';
+	    var EVENT_FINISHED_ANIMATION = 'finished-animation';
 	    var MODULE_TYPE = 'content';
 	    var LOCKED_MODULES = [ 'animation', 'control' ];
 	    var DEFAULT_OPTIONS = {
@@ -355,7 +356,10 @@
 	        }
 
 	        $wrap.stop().animate({ scrollTop: value }, speed, function() {
-	            $el.trigger(EVENT_SCREEN_CHANGED, { direction: index, initiator: 'MODULE_NAME' });
+	            $el.trigger(EVENT_FINISHED_ANIMATION, {
+	                direction: index,
+	                initiator: 'MODULE_NAME'
+	            });
 	        });
 	    };
 
@@ -1130,20 +1134,20 @@
 	    var WRAP_CLASS_NAME = 'wrap-roller';
 	    var WRAP_NODE = '<div class="' + WRAP_CLASS_NAME + '"></div>';
 	    var EVENT_REQUEST_MOVE = 'request-move';
+	    var EVENT_MOVE_SCREEN = 'move-screen';
 	    var PROPERTY_NAME = 'roller';
 	    var DEFAULT_OPTIONS = {
 	        modules: {
-	            touch: false,
-	            'slide-animation': false,
-	            wheel: false,
+	            touch: true,
+	            'slide-animation': true,
+	            wheel: true,
 	            menu: false,
-	            keyboard: false,
+	            keyboard: true,
 	            hash: false,
 	            'simple-page': false
 	        },
 	        speed: 500,
-	        axis: 'y',
-	        debug: true
+	        axis: 'y'
 	    };
 	    
 	    var _getNextScreen = function(direction) {
@@ -1234,7 +1238,7 @@
 	            if(nextScreen !== -1) {
 	                this.currentScreen = nextScreen;
 
-	                this.$el.trigger('move-screen', {
+	                this.$el.trigger(EVENT_MOVE_SCREEN, {
 	                    index: nextScreen,
 	                    speed: speed,
 	                    initiator: initiator
