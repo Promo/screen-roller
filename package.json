@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "lint": "eslint --fix lib",
-    "precommit": "eslint lib && webpack && git add screen-roller.js && git add screen-roller.css"
+    "precommit": "eslint --fix lib && webpack && git add screen-roller.js && git add screen-roller.css"
   },
   "repository": {
     "type": "git",
