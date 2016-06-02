@@ -277,7 +277,7 @@
 	    var EVENT_SCROLL = 'scroll.' + MODULE_NAME;
 	    var EVENT_MOVE_SCREEN = 'move-screen.' + MODULE_NAME;
 	    var EVENT_REQUEST_MOVE = 'request-move';
-	    var EVENT_FINISHED_ANIMATION = 'finished-animation';
+	    var EVENT_SCREEN_CHANGED = 'screen-has-changed';
 	    var MODULE_TYPE = 'content';
 	    var LOCKED_MODULES = [ 'animation', 'control' ];
 	    var DEFAULT_OPTIONS = {
@@ -356,10 +356,7 @@
 	        }
 
 	        $wrap.stop().animate({ scrollTop: value }, speed, function() {
-	            $el.trigger(EVENT_FINISHED_ANIMATION, {
-	                direction: index,
-	                initiator: 'MODULE_NAME'
-	            });
+	            $el.trigger(EVENT_SCREEN_CHANGED, { direction: index, initiator: 'MODULE_NAME' });
 	        });
 	    };
 
@@ -384,8 +381,8 @@
 
 	        var wrapWidth = $wrap.width();
 	        var wrapHeight = $wrap.height();
-	        var minWidth = module.options.minWidth;
-	        var minHeight = module.options.minHeight;
+	        var minWidth = module.minWidth;
+	        var minHeight = module.minHeight;
 
 	        if(module.enabled) {
 	            module.offsets = _calcOffsetsScreen.call(module);
@@ -441,8 +438,11 @@
 	    };
 
 	    function SimplePage(params) {
+	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+
 	        this.core = params.roller;
-	        this.options = $.extend(DEFAULT_OPTIONS, params.options);
+	        this.minWidth = options.minWidth;
+	        this.minHeight = options.minHeight;
 	        this.type = MODULE_TYPE;
 	        this.onWatching();
 	        this.disable();
