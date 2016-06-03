@@ -1143,7 +1143,7 @@
 	(function($) {
 	    var PLAGIN_NAME = 'screenroller';
 	    var SCREEN_CLASS_NAME = 'screen';
-	    var SCREEN_SELECTOR = '.' + SCREEN_CLASS_NAME;
+	    var SCREEN_SELECTOR = '> .' + SCREEN_CLASS_NAME;
 	    var WRAP_CLASS_NAME = 'wrap-roller';
 	    var WRAP_NODE = '<div class="' + WRAP_CLASS_NAME + '"></div>';
 	    var EVENT_REQUEST_MOVE = 'request-move';
