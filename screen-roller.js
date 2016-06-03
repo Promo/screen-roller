@@ -117,10 +117,6 @@
 	        this.core.$el.attr('style', '');
 	    };
 
-	    var _cssTransitionByIndex = function(index) {
-	        return 'translate3d(0, ' + index * -100 + '%, 0)';
-	    };
-
 	    var _getTransitionValue = function() {
 	        var axis = this.core.options.axis;
 	        var $el = this.core.$el;
@@ -131,6 +127,13 @@
 	        }
 
 	        return axis === 'x' ? parseInt(transformValues[ 4 ]) : parseInt(transformValues[ 5 ]);
+	    };
+
+	    var _cssTransitionByIndex = function(index) {
+	        return ({
+	            y: 'translate3d(0, ' + index * -100 + '%, 0)',
+	            x: 'translate3d(' + index * -100 + '%, 0, 0)'
+	        })[this.core.options.axis];
 	    };
 
 	    var _buildTransitionByValue = function(value) {
@@ -1269,6 +1272,14 @@
 	        this.$el.off(EVENT_REQUEST_MOVE);
 	    };
 
+	    var _setStyles = function() {
+	        this.$wrap.addClass('axis-' + this.options.axis);
+	    };
+
+	    var _removeStyles = function() {
+	        this.$wrap.removeClass('axis-' + this.options.axis);
+	    };
+
 	    var ScreenRoller = function(params) {
 	        this.$el = params.$el;
 	        this.$el.roller = this;
@@ -1291,6 +1302,7 @@
 	        this.$el.data(PROPERTY_NAME, this);
 
 	        this.enable();
+	        _setStyles.call(this);
 	        _addListeners.call(this);
 	        _initModules.call(this);
 	    };
@@ -1306,6 +1318,7 @@
 	    ScreenRoller.prototype.destruct = function() {
 	        var $el = this.$el;
 
+	        _removeStyles.call(this);
 	        _removeListeners.call(this);
 	        _destructModules.call(this);
 	        _unwrap.call(this);

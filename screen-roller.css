@@ -13,12 +13,28 @@
     width: 100%;
 }
 
-.slide-animation .screen
+.slide-animation.axis-y .screen
 {
     position: relative;
     width: 100%;
     height: 100%;
     font-size: 20px;
+}
+
+.slide-animation.axis-x .roller
+{
+    white-space: nowrap;
+    font-size: 0;
+}
+
+.slide-animation.axis-x .screen
+{
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    white-space: normal;
+    font-size: 1rem;
 }
 .simple-page
 {
