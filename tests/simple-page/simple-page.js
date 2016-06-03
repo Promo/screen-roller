@@ -34,9 +34,7 @@ QUnit.test('[simple-page]: async', function(assert){
     var $roller = depot[ testId ].$roller;
     var roller = $roller.screenroller({ modules: { 'simple-page': { minWidth: 10000 } } }).roller;
     var $wrap = roller.$wrap;
-    var module = roller.modules[ 'simple-page' ];
     var done = assert.async();
-
 
     assert.equal(roller.currentScreen, 0, 'expect currentScreen to be equal 0');
     assert.equal($wrap. scrollTop(), 0, 'expect scrollTop to be equal 0');

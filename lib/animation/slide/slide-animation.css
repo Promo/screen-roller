@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.slide-animation .roller
+.slide-animation > .roller
 {
     top: 0;
     left: 0;
@@ -13,7 +13,7 @@
     width: 100%;
 }
 
-.slide-animation.axis-y .screen
+.slide-animation.axis-y > .roller > .screen
 {
     position: relative;
     width: 100%;
@@ -21,13 +21,13 @@
     font-size: 20px;
 }
 
-.slide-animation.axis-x .roller
+.slide-animation.axis-x > .roller
 {
     white-space: nowrap;
     font-size: 0;
 }
 
-.slide-animation.axis-x .screen
+.slide-animation.axis-x > .roller > .screen
 {
     vertical-align: top;
     width: 100%;

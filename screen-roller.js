@@ -152,6 +152,7 @@
 	    };
 
 	    var _animate = function(data) {
+	        var module = this;
 	        var index = data.index;
 	        var value = _cssTransitionByIndex.call(this, data.index);
 	        var speed = data.speed === 0 ? 1 : data.speed;
@@ -163,7 +164,8 @@
 	        $el.on('transitionend webkitTransitionEnd', function() {
 	            $el.trigger(EVENT_FINISHED_ANIMATION, {
 	                direction: index,
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        });
 	    };
@@ -173,8 +175,9 @@
 	        var $el = this.core.$el;
 
 	        $el.on(EVENT_MOVE_SCREEN, function(e, data) {
-	            if(module.enabled) {
+	            if(module.enabled && data.unique === module.core.unique) {
 	                _animate.call(module, data);
+	                return false;
 	            }
 	        });
 
@@ -353,13 +356,18 @@
 	        var $wrap = this.core.$wrap;
 	        var $el = this.core.$el;
 	        var value = this.offsets[ index ];
+	        var module = this;
 
 	        if(!speed || speed == 0) {
 	            return $wrap.scrollTop(value);
 	        }
 
 	        $wrap.stop().animate({ scrollTop: value }, speed, function() {
-	            $el.trigger(EVENT_SCREEN_CHANGED, { direction: index, initiator: 'MODULE_NAME' });
+	            $el.trigger(EVENT_SCREEN_CHANGED, {
+	                direction: index,
+	                initiator: 'MODULE_NAME',
+	                unique: module.core.unique
+	            });
 	        });
 	    };
 
@@ -369,11 +377,14 @@
 	        var offsets = this.offsets.slice();
 	        var currentScreen = this.core.currentScreen;
 	        var screenInView = _detectCurrentScreen.call(this, offsets);
+	        var module = this;
+
 	        if(screenInView !== 'undefined' && screenInView !== currentScreen) {
 	            this.core.$el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: screenInView,
 	                speed: 0,
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 	    };
@@ -544,31 +555,37 @@
 	        var last = this.last;
 	        var first = this.first;
 
+	        var module = this;
+
 	        if(next && next.indexOf(code) >= 0) {
 	            $el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: 'next',
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 
 	        if(prev && prev.indexOf(code) >= 0) {
 	            $el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: 'prev',
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 
 	        if(last && last.indexOf(code) >= 0) {
 	            $el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: 'last',
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 
 	        if(first && first.indexOf(code) >= 0) {
 	            $el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: 'first',
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 	    };
@@ -717,11 +734,13 @@
 	        $el.trigger(INNER_EVENT_TOUCH_START, {
 	            initiator: MODULE_NAME,
 	            startPoint: module.startPoint,
-	            event: e
+	            event: e,
+	            unique: module.core.unique
 	        });
 	    };
 
 	    var _processTouchMove = function(e) {
+	        var module = this;
 	        var $el = this.core.$el;
 	        var currentPoint = _getcurrentPoint.call(this, e);
 	        var lastPoint = this.lastPoint || currentPoint;
@@ -734,11 +753,13 @@
 	        $el.trigger(INNER_EVENT_TOUCH_MOVE, {
 	            initiator: MODULE_NAME,
 	            offset: offset,
-	            event: e
+	            event: e,
+	            unique: module.core.unique
 	        });
 	    };
 
 	    var _processTouchEnd = function(e) {
+	        var module = this;
 	        var $el = this.core.$el;
 
 	        var startPoint = this.startPoint || 0;
@@ -756,7 +777,8 @@
 
 	        if(generalMovement !== lastMovement) {
 	            $el.trigger(INNER_EVENT_RESTORE_OFFSET, {
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 
@@ -770,19 +792,22 @@
 	            if(generalMovement === 'next' && !currentIsLast) {
 	                return $el.trigger(INNER_EVENT_REQUEST_MOVE, {
 	                    direction: 'next',
-	                    initiator: MODULE_NAME
+	                    initiator: MODULE_NAME,
+	                    unique: module.core.unique
 	                });
 	            }
 
 	            if(generalMovement === 'prev' && !currentIsFirst) {
 	                return $el.trigger(INNER_EVENT_REQUEST_MOVE, {
 	                    direction: 'prev',
-	                    initiator: MODULE_NAME
+	                    initiator: MODULE_NAME,
+	                    unique: module.core.unique
 	                });
 	            }
 
 	            $el.trigger(INNER_EVENT_RESTORE_OFFSET, {
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: module.core.unique
 	            });
 	        }
 	    };
@@ -867,6 +892,8 @@
 	                if(self._options.preventMouse) {
 	                    preventDefault(event);
 	                }
+
+	                event.stopPropagation();
 	            }
 	        };
 
@@ -1098,7 +1125,8 @@
 
 	                    $el.trigger(EVENT_REQUEST_MOVE, {
 	                        direction: direction,
-	                        initiator: MODULE_NAME
+	                        initiator: MODULE_NAME,
+	                        unique: module.core.unique
 	                    });
 	                }
 	            }
@@ -1242,6 +1270,7 @@
 
 	    var _move = function(params) {
 	        if(this.enabled) {
+	            var roller = this;
 	            var speed = params.speed;
 	            var initiator = params.initiator;
 	            var nextScreen = _getNextScreen.call(this, params.direction);
@@ -1254,7 +1283,8 @@
 	                this.$el.trigger(EVENT_MOVE_SCREEN, {
 	                    index: nextScreen,
 	                    speed: speed,
-	                    initiator: initiator
+	                    initiator: initiator,
+	                    unique: roller.unique
 	                });
 	            }
 	        }
@@ -1264,9 +1294,10 @@
 	        var roller = this;
 
 	        this.$el.on(EVENT_REQUEST_MOVE, function(e, params) {
-	            _move.call(roller, params);
-
-	            return false;
+	            if(params.unique === roller.unique) {
+	                _move.call(roller, params);
+	                return false;
+	            }
 	        });
 	    };
 
@@ -1297,6 +1328,7 @@
 	        this.$screens = this.$el.find(SCREEN_SELECTOR);
 	        this.countScreens = this.$screens.size();
 	        this.currentScreen = 0;
+	        this.unique = parseInt(Math.random() * 10000000);
 	        this.$wrap = _wrap.call(this);
 
 	        this.$el.moveTo = this.moveTo.bind(this);
@@ -1496,7 +1528,8 @@
 	            if(module.enabled) {
 	                $el.trigger(EVENT_REQUEST_MOVE, {
 	                    direction: $(this).index(),
-	                    type: MODULE_NAME
+	                    type: MODULE_NAME,
+	                    unique: module.core.unique
 	                });
 	            }
 	        });
