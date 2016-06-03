@@ -1265,6 +1265,8 @@
 
 	        this.$el.on(EVENT_REQUEST_MOVE, function(e, params) {
 	            _move.call(roller, params);
+
+	            return false;
 	        });
 	    };
 
