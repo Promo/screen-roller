@@ -1422,8 +1422,7 @@
 	        var $el = this.core.$el;
 
 	        $el.on(EVENT_SCREEN_MOVE, function(e, data) {
-
-	            if(module.enabled) {
+	            if(module.enabled && data.unique === module.core.unique) {
 	                _processingRequestMove.call(module, data.index);
 	            }
 	        });
@@ -1479,7 +1478,8 @@
 	        if(index !== -1) {
 	            this.$el.trigger(EVENT_REQUEST_MOVE, {
 	                direction: index,
-	                initiator: MODULE_NAME
+	                initiator: MODULE_NAME,
+	                unique: this.core.unique
 	            });
 	        } else {
 	            _setHash(this.screensHash[ 0 ]);
