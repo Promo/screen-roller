@@ -452,7 +452,7 @@
 	    };
 
 	    function SimplePage(params) {
-	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+	        var options = $.extend(true, {}, DEFAULT_OPTIONS, params.options);
 
 	        this.core = params.roller;
 	        this.minWidth = options.minWidth;
@@ -591,7 +591,7 @@
 	    };
 
 	    function Keyboard(params) {
-	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+	        var options = $.extend(true, {}, DEFAULT_OPTIONS, params.options);
 
 	        this.core = params.roller;
 	        this.next = options.next;
@@ -828,7 +828,7 @@
 	    };
 
 	    function Touch(params) {
-	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+	        var options = $.extend(true, {}, DEFAULT_OPTIONS, params.options);
 
 	        this.core = params.roller;
 	        this.type = MODULE_TYPE;
@@ -1557,9 +1557,9 @@
 	    };
 
 	    function Menu(params) {
-	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+	        var options = $.extend(true, {}, DEFAULT_OPTIONS, params.options);
 
-	        this.$items = params.options.items.slice();
+	        this.$items = options.items.slice();
 	        this.core = params.roller;
 	        this.type = MODULE_TYPE;
 	        this.classCurrent = options.classCurrent;
