@@ -1317,7 +1317,7 @@
 	        this.$el = params.$el;
 	        this.$el.roller = this;
 
-	        this.options = $.extend(true, DEFAULT_OPTIONS, params.options);
+	        this.options = $.extend(true, {}, DEFAULT_OPTIONS, params.options);
 	        this.nodes = {
 	            $win: $(window),
 	            $doc: $(document),
@@ -1520,10 +1520,16 @@
 	    var MODULE_TYPE = 'navigation';
 	    var EVENT_CLICK = 'click.' + MODULE_NAME;
 	    var EVENT_REQUEST_MOVE = 'request-move';
+	    var EVENT_MOVE_SCREEN = 'move-screen';
+
+	    var DEFAULT_OPTIONS = {
+	        classCurrent: 'current'
+	    };
 
 	    var _addListeners = function() {
 	        var module = this;
 	        var $el = this.core.$el;
+
 	        module.$items.on(EVENT_CLICK, function() {
 	            if(module.enabled) {
 	                $el.trigger(EVENT_REQUEST_MOVE, {
@@ -1533,19 +1539,34 @@
 	                });
 	            }
 	        });
+
+	        $el.on(EVENT_MOVE_SCREEN, function(e, data){
+	            if(module.enabled && data.unique === module.core.unique) {
+	                _setCurrentClass.call(module, data.index);
+	            }
+	        });
 	    };
 
 	    var _removerListeners = function() {
 	        this.$items.off(EVENT_CLICK);
 	    };
 
+	    var _setCurrentClass = function(index) {
+	        this.$items.removeClass(this.classCurrent);
+	        this.$items.eq(index).addClass(this.classCurrent);
+	    };
+
 	    function Menu(params) {
+	        var options = $.extend(DEFAULT_OPTIONS, params.options);
+
 	        this.$items = params.options.items.slice();
 	        this.core = params.roller;
 	        this.type = MODULE_TYPE;
+	        this.classCurrent = options.classCurrent;
 	        this.enable();
 
 	        _addListeners.call(this);
+	        _setCurrentClass.call(this, 0);
 	    }
 
 	    Menu.prototype.enable = function() {
