@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <script src="../../vendors/jquery.js"></script>
+    <script src="../../screen-roller.js"></script>
+    <link href="../../screen-roller.css" rel="stylesheet">
+    <link href="font-awesome.css" rel="stylesheet">
+    <link href="demo.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+</head>
+<body>
+
+<ul class="main-menu">
+    <li>Intro</li>
+    <li>Usage</li>
+    <li>Features</li>
+    <li><a href="https://github.com/Promo/screen-roller#screen-roller">Documentation</a></li>
+</ul>
+<div class="roller base-roller">
+    <div class="screen" data-hash="intro">
+        <div class="container">
+            <h1>Screen-Roller</h1>
+
+            <p>Create fullpage-like websites, that fit to any sizes of screens and devices</p>
+
+            <div class="browser">
+                <div class="browser-panel">
+                    <div class="browser-button"></div>
+                    <div class="browser-button"></div>
+                    <div class="browser-button"></div>
+                </div>
+                <div class="browser-window">
+                    <div class="roller roller-in-browser">
+                        <div class="screen">
+                            <i class="fa fa-gift browser-picture" aria-hidden="true"></i>
+
+                            <div class="site-button">Buy</div>
+                        </div>
+                        <div class="screen">
+                            <i class="fa fa-gamepad browser-picture" aria-hidden="true"></i>
+
+                            <div class="site-button">Buy</div>
+                        </div>
+                        <div class="screen">
+                            <i class="fa fa-bicycle browser-picture" aria-hidden="true"></i>
+
+                            <div class="site-button">Buy</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" data-hash="usage">
+        <div class="container">
+            <ul class="usage">
+                <li>
+                    <h3>Including files</h3>
+
+                    <div class="code">
+<pre>&lt;script</span> <span class="pl-e">src</span>=<span class="pl-s"><span
+class="pl-pds">"</span>screen-roller.js<span class="pl-pds">"</span></span>&gt;&lt;/<span
+class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">link</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>screen-roller.css<span
+class="pl-pds">"</span></span> <span class="pl-e">rel</span>=<span class="pl-s"><span
+class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span>&gt;</pre>
+                    </div>
+                </li>
+
+                <li>
+                    <h3>Add HTML structure</h3>
+
+                    <div class="code">
+<pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span
+class="pl-pds">"</span>roller<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>screen<span
+class="pl-pds">"</span></span>&gt;Content&lt;/<span class="pl-ent">div</span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>screen<span
+class="pl-pds">"</span></span>&gt;Content&lt;/<span class="pl-ent">div</span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>screen<span
+class="pl-pds">"</span></span>&gt;Content&lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre>
+                    </div>
+                </li>
+
+                <li>
+                    <h3>Initialization</h3>
+
+                    <div class="code">
+<pre><span class="pl-en">$</span>(<span class="pl-c1">document</span>).<span class="pl-en">ready</span>(<span
+class="pl-k">function</span>() {
+<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">'</span>.roller<span
+class="pl-pds">'</span></span>).<span class="pl-en">screenroller</span>();
+});</pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="screen" data-hash="features">
+        <div class="container">
+            <ul class="features">
+                <li>
+                    <i class="fa fa-cubes" aria-hidden="true"></i>
+                    <h4>Modular structure</h4>
+                    <p>Easy to write extensions</p>
+                </li>
+                <li>
+                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                    <!--<h4>Without freezing during animation</h4>-->
+                    <h4>Responsive control</h4>
+                    <p>You can change scroll direction during animation.</p>
+                    <!--<p>Module "wheel" is based on library <a href="https://github.com/Promo/wheel-indicator">"wheel-indicator"</a></p>-->
+                </li>
+                <li>
+                    <i class="fa fa-trello" aria-hidden="true"></i>
+                    <i class="fa fa-object-group" aria-hidden="true"></i>
+                    <h4>Simple mod</h4>
+                    <p>Screen-roller can become а simple page, if screen is small and content not intermeddle</p>
+                </li>
+                <li>
+                    <i class="fa fa-mobile" aria-hidden="true"></i>
+                    <h4>Touch support</h4>
+                    <p>It works the same on desktop and mobile</p>
+                </li>
+                <li>
+                    <i class="fa fa-sliders" aria-hidden="true"></i>
+                    <h4>Flexible</h4>
+                    <p>Each module is independent but can work together with the other</p>
+                </li>
+                <li>
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    <h4>High FPS</h4>
+                    <p>Animation of transitions occurs without repainting</p>
+                </li>
+
+            </ul>
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+            <i class="fa fa-random" aria-hidden="true"></i>
+
+
+            <i class="fa fa-rocket" aria-hidden="true"></i>
+            <i class="fa fa-th-large" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var roller = $('.base-roller').screenroller(
+        {
+            modules: {
+                'simple-page': {
+                    minWidth: 700,
+                    minHeight: 400
+                },
+                keyboard: {
+                    next: [ 83 ], prev: [ 87 ]
+                },
+                hash: true,
+                wheel: true,
+                menu: {
+                    items: $('.main-menu li')
+                },
+                'slide-animation': {},
+
+                touch: { mouseEmulate: false}
+            }
+        }
+    ).roller;
+
+    var minWidth = 0;
+    var minHeight = 0;
+
+    var $rollerInBrowser = $('.roller-in-browser').screenroller({
+        modules: {
+            hash: false,
+            touch: false,
+//                wheel: false,
+            'simple-page': {
+                minWidth: minWidth,
+                minHeight: minHeight
+            },
+            'simple-page': {
+                minWidth: 500,
+                minHeight: 400
+            },
+        }
+    });
+
+    function startAnimate() {
+        var rem = 10;
+        var timer;
+        var time = 2;
+        var path = 1;
+        var $win = $(window);
+        var $wrap = $('.browser-window .wrap-roller');
+        var $browser = $('.browser-window');
+        var tm = TweenMax;
+        var tl = new TimelineMax({ repeat: -1, repeatDelay: 7 });
+
+        tl.append(function() {
+            $rollerInBrowser.moveTo(1, 500);
+        }, time);
+
+        tl.append(function() {
+            $rollerInBrowser.moveTo(2, 500);
+        }, time);
+
+        tl.append(function() {
+            $rollerInBrowser.moveTo(0, 500);
+        }, time);
+
+        tl.append(function() {
+            tm.to($browser, 1, {
+                height: rem * 39, onComplete: function() {
+                    $win.resize();
+                }
+            });
+        }, time);
+
+        tl.append(function() {
+            tm.to($wrap, 1.5, { scrollTop: rem * 51 })
+        }, time);
+
+        tl.append(function() {
+            tm.to($wrap, 1.5, { scrollTop: rem * 102 })
+        }, time);
+
+        tl.append(function() {
+            tm.to($('.browser-window'), 1, {
+                height: rem * 45, onComplete: function() {
+                    $win.resize();
+                }
+            });
+        }, time);
+
+        $browser.hover(function() {
+            clearTimeout(timer);
+            tl.pause();
+        }, function() {
+            timer = setTimeout(function() {
+                tl.play();
+            }, 1500);
+        });
+    }
+
+    startAnimate()
+
+</script>
+
+
+<!--<div class="block-resize">-->
+<!--<div class="arrow-resize size-l"></div>-->
+<!--<div class="arrow-resize size-m"></div>-->
+<!--<div class="arrow-resize size-s"></div>-->
+<!--</div>-->

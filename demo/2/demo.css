@@ -1,0 +1,298 @@
+html
+{
+    font-size: 10px;
+    font-family: arial;
+}
+
+body
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f3f2f0;
+}
+
+.container
+{
+    transform: translate(-50%, -50%);
+    width: 80rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+}
+
+.simple-page .container
+{
+    transform: none;
+    position: static;
+}
+
+h1
+{
+    font-size: 10rem;
+    text-align: center;
+    margin: 0;
+    font-weight: normal;
+}
+
+.screen[data-hash="intro"]
+{
+    /*background: #c9f7b5;*/
+}
+.screen[data-hash="second"]
+{
+    /*background: #afbafb;*/
+}
+.screen[data-hash="third"]
+{
+    /*background: #f1b6b6;*/
+}
+
+.screen[data-hash="intro"] .container
+{
+    height: 70rem;
+}
+
+.browser
+{
+    border: 3px solid #000;
+    border-radius: 3px;
+    width: 67rem;
+    display: inline-block;
+}
+.browser-panel
+{
+    border-bottom: 1px solid #000;
+    height: 3.8rem;
+    text-align: right;
+    box-sizing: border-box;
+    padding-top: 1.3rem;
+    padding-right: 1rem;
+}
+
+.browser-button
+{
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #000;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 0.2rem;
+}
+
+.browser-window
+{
+    height: 45rem;
+    position: relative;
+}
+
+.browser-picture
+{
+    font-size: 32rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 1.4rem;
+}
+.site-button
+{
+    background: #2178aa;
+    font-size: 5rem;
+    height: 9rem;
+    line-height: 9rem;
+    width: 24rem;
+    border-radius: 1rem;
+    color: #fff;
+    margin: auto;
+}
+
+.roller-in-browser .screen
+{
+    background: #fbf3dc;
+    padding-bottom: 3rem;
+    box-sizing: border-box;
+}
+
+.fa-gift
+{
+    color: #f4e24c;
+}
+
+.fa-gamepad
+{
+    color: #d1de5d;
+}
+
+.fa-bicycle
+{
+    color: #f9c62d;
+}
+
+.roller-in-browser .screen:nth-child(1)
+{
+    background: #fbf3dc;
+}
+
+.roller-in-browser .screen:nth-child(2)
+{
+    background: #f4f6e2;
+}
+
+.roller-in-browser .screen:nth-child(3)
+{
+    background: #fcf3d6;
+}
+
+.code
+{
+    background: #f7f7f7;
+    text-align: left;
+    padding: 0.6rem 3rem;
+    border-radius: 0.2rem;
+}
+
+.usage
+{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features
+{
+    list-style: none;
+    text-align: left;
+}
+
+.block-resize
+{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border: 1px solid red;
+}
+
+.arrow-resize
+{
+    border: 0.4rem solid red;
+    border-color: darkgray;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.arrow-resize.size-l
+{
+    width: 16rem;
+    height: 16rem;
+    border-width: 1.2rem;
+}
+
+.arrow-resize.size-m
+{
+    width: 12rem;
+    height: 12rem;
+    border-width: 1.1rem;
+}
+
+.arrow-resize.size-s
+{
+    width: 8rem;
+    height: 8rem;
+    border-width: 1rem;
+}
+
+.main-menu
+{
+    position: fixed;
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+    text-align: center;
+    font-size: 1.3rem;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    z-index: 10;
+    background: #f3f2f0;
+}
+
+.main-menu li
+{
+    display: inline-block;
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+}
+
+.main-menu li:hover
+{
+    color: red;
+}
+
+.main-menu li.current
+{
+    cursor: default;
+    border-bottom-color: red;
+}
+
+.main-menu li.current:hover
+{
+    color: #000;
+}
+
+.main-menu a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.main-menu a:hover
+{
+    color: red;
+}
+
+.features
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 1rem;
+}
+
+.features li
+{
+    display: inline-block;
+    vertical-align: top;
+    width: 24rem;
+    margin-right: 2rem;
+    padding: 2em 0;
+}
+
+.features h4
+{
+    color: #333;
+    font-size: 2.8em;
+    line-height: 1.1;
+    margin: 0;
+    font-weight: normal;
+    padding-bottom: 0.2em;
+}
+
+.features p
+{
+    font-size: 1.5em;
+    line-height: 1.3;
+    margin: 0;
+    padding: 0;
+}
+
+.features i 
+{
+    font-size: 5em;
+    padding-bottom: 0.2em;
+    padding-left: 0.1em;
+}

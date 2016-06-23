@@ -2,3 +2,8 @@
 {
     overflow-y: auto;
 }
+
+.wrap-roller.simple-page > .roller > .screen
+{
+    height: auto;
+}
