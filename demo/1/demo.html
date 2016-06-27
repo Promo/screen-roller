@@ -18,10 +18,10 @@
     <li>5</li>
     <li>6</li>
 </ul>
-<!--<ul class="arrows">-->
-    <!--<li class="up">up</li>-->
-    <!--<li class="down">down</li>-->
-<!--</ul>-->
+<ul class="arrows">
+    <li class="up">up</li>
+    <li class="down">down</li>
+</ul>
 
 <div class="roller-place" style="width: 99%; height: 99%; position: absolute;">
 
@@ -131,6 +131,10 @@
 
                     touch: {
                         mouseEmulate: true
+                    },
+                    arrows: {
+                        prev: $('.arrows .up'),
+                        next: $('.arrows .down')
                     }
                 }
             }
