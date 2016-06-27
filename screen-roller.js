@@ -283,6 +283,8 @@
 	    var EVENT_RESIZE = 'resize.' + MODULE_NAME;
 	    var EVENT_SCROLL = 'scroll.' + MODULE_NAME;
 	    var EVENT_MOVE_SCREEN = 'move-screen.' + MODULE_NAME;
+	    var EVENT_TURNED_ON = 'module-has-turned-on.' + MODULE_NAME;
+	    var EVENT_TURNED_OFF = 'module-has-turned-off.' + MODULE_NAME;
 	    var EVENT_REQUEST_MOVE = 'request-move';
 	    var EVENT_SCREEN_CHANGED = 'screen-has-changed';
 	    var MODULE_TYPE = 'content';
@@ -406,6 +408,12 @@
 	        if((wrapWidth < minWidth || wrapHeight < minHeight) && !module.enabled) {
 	            module.enable();
 
+	            module.core.$el.trigger(EVENT_TURNED_ON, {
+	                initiator: MODULE_NAME,
+	                type: MODULE_TYPE,
+	                unique: module.core.unique
+	            });
+
 	            setTimeout(function() {
 	                module.offsets = _calcOffsetsScreen.call(module);
 	                _scrollTo.call(module, module.core.currentScreen);
@@ -414,6 +422,12 @@
 
 	        if((wrapWidth > minWidth) && (wrapHeight > minHeight) && (module.enabled)) {
 	            module.disable();
+
+	            module.core.$el.trigger(EVENT_TURNED_OFF, {
+	                initiator: MODULE_NAME,
+	                type: MODULE_TYPE,
+	                unique: module.core.unique
+	            });
 	        }
 	    };
 
