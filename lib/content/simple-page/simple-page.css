@@ -3,6 +3,12 @@
     overflow-y: auto;
 }
 
+.wrap-roller.simple-page
+{
+    height: auto;
+    width: auto;
+}
+
 .wrap-roller.simple-page > .roller > .screen
 {
     height: auto;
