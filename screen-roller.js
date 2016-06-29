@@ -1408,8 +1408,6 @@
 	    var EVENT_MOVE_SCREEN = 'move-screen';
 
 	    var DEFAULT_OPTIONS = {
-	        next: [ ],
-	        prev: [ ],
 	        classDisable: 'disable'
 	    };
 
@@ -1418,7 +1416,7 @@
 	        var core = this.core;
 	        var $el = this.core.$el;
 
-	        module.$next.on(EVENT_CLICK, function() {
+	        module.$next && module.$next.on(EVENT_CLICK, function() {
 	            if(module.enabled) {
 	                $el.trigger(EVENT_REQUEST_MOVE, {
 	                    direction: 'next',
@@ -1428,7 +1426,7 @@
 	            }
 	        });
 
-	        module.$prev.on(EVENT_CLICK, function() {
+	        module.$prev && module.$prev.on(EVENT_CLICK, function() {
 	            if(module.enabled) {
 	                $el.trigger(EVENT_REQUEST_MOVE, {
 	                    direction: 'prev',
