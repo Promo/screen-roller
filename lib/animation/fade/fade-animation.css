@@ -1,0 +1,39 @@
+.fade-animation {
+  overflow: hidden;
+  position: relative;
+}
+
+.fade-animation > .roller {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.fade-animation.axis-y > .roller > .screen {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  opacity: 0;
+  transition: all 300ms;
+
+}
+
+
+.fade-animation.axis-x > .roller {
+  white-space: nowrap;
+  font-size: 0;
+}
+
+.fade-animation.axis-x > .roller > .screen {
+  vertical-align: top;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  white-space: normal;
+  font-size: 1rem;
+}

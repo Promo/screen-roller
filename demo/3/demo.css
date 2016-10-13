@@ -1,0 +1,94 @@
+/*body, html {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+/*}*/
+/*.solid-mod .screen*/
+/*{*/
+    /*margin: 20px;*/
+/*}*/
+/*.solid-mod .screen[data-hash="first"]*/
+/*{*/
+    /*height: 500px;*/
+/*}*/
+/*.solid-mod .screen:nth-child(2)*/
+/*{*/
+    /*height: 200px;*/
+/*}*/
+/*.solid-mod .screen:nth-child(3)*/
+/*{*/
+    /*height: 800px;*/
+/*}*/
+/*.solid-mod .screen:nth-child(4)*/
+/*{*/
+    /*height: 300px;*/
+/*}*/
+/*.solid-mod .screen:nth-child(5)*/
+/*{*/
+    /*height: 300px;*/
+/*}*/
+/*.solid-mod .screen:nth-child(6)*/
+/*{*/
+    /*height: 500px;*/
+/*}*/
+.screen[data-hash="first"]
+{
+    background: #c9f7b5;
+}
+.screen[data-hash="second"]
+{
+    background: #afbafb;
+}
+.screen[data-hash="third"]
+{
+    background: #f1b6b6;
+}
+.screen[data-hash="fourth"]
+{
+    background: #fffab8;
+}
+.screen[data-hash="fifth"]
+{
+    background: #c5fbfc;
+}
+.screen[data-hash="sixth"]
+{
+    background: #efbefd;
+}
+
+.arrows
+{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    list-style: none;
+}
+.arrows li
+{
+    text-align: center;
+    width: 40px;
+    line-height: 40px;
+    background: rgba(255, 255, 0, 0.5);
+    cursor: pointer;
+    margin: 0 0 5px 0;
+}
+
+.arrows li.disable
+{
+    opacity: 0.3;
+}
+
+
+.withoutMovement
+{
+    background: yellow;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    margin-top: -100px;
+    margin-left: -100px;
+    text-align: center;
+    line-height: 200px;
+}
